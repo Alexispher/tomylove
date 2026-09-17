@@ -79,12 +79,9 @@ button{-webkit-tap-highlight-color:transparent}
 .word::before,.word::after{content:attr(data-word);position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:0;color:#52bdff;will-change:transform,opacity}
 .word::before{text-shadow:0 0 20px rgba(70,184,255,.35),0 0 46px rgba(23,107,255,.22)}
 .word::after{color:#bceaff;text-shadow:0 0 12px rgba(139,216,255,.28)}
-.word.motion-left{animation:skidLeft var(--wordDur,.72s) linear forwards;text-shadow:0 0 8px rgba(255,255,255,.36),0 0 24px rgba(183,232,255,.24),0 0 54px rgba(70,184,255,.20),0 0 105px rgba(23,107,255,.11)}
-.word.motion-right{animation:skidRight var(--wordDur,.72s) linear forwards;text-shadow:0 0 8px rgba(255,255,255,.36),0 0 24px rgba(183,232,255,.24),0 0 54px rgba(70,184,255,.20),0 0 105px rgba(23,107,255,.11)}
-.word.motion-left::before{animation:trailLeft var(--wordDur,.72s) linear forwards}
-.word.motion-left::after{animation:trailLeft2 var(--wordDur,.72s) linear forwards}
-.word.motion-right::before{animation:trailRight var(--wordDur,.72s) linear forwards}
-.word.motion-right::after{animation:trailRight2 var(--wordDur,.72s) linear forwards}
+.word.motion-down{animation:glideDown var(--wordDur,.72s) cubic-bezier(.18,.72,.24,1) forwards;text-shadow:0 0 8px rgba(255,255,255,.34),0 0 24px rgba(183,232,255,.22),0 0 52px rgba(70,184,255,.18),0 0 100px rgba(23,107,255,.10)}
+.word.motion-down::before{animation:trailDown var(--wordDur,.72s) cubic-bezier(.18,.72,.24,1) forwards}
+.word.motion-down::after{animation:trailDown2 var(--wordDur,.72s) cubic-bezier(.18,.72,.24,1) forwards}
 .word.blue-word{color:#fbfdff;text-shadow:0 0 8px rgba(255,255,255,.52),0 0 21px rgba(183,232,255,.58),0 0 52px rgba(70,184,255,.46),0 0 115px rgba(23,107,255,.28)}
 .word.hide{animation:wordOut .32s ease forwards}
 
@@ -97,49 +94,27 @@ button{-webkit-tap-highlight-color:transparent}
 
 #yt{position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;opacity:0;pointer-events:none}
 
-@keyframes skidLeft{
-  0%{opacity:0;transform:translate3d(-38vw,16px,0) rotate(-2.4deg) skewX(-9deg) scale(.90);letter-spacing:-.015em}
-  15%{opacity:1;transform:translate3d(4.8vw,-3px,0) rotate(.6deg) skewX(2.5deg) scale(1.035);letter-spacing:-.055em}
-  28%{opacity:1;transform:translate3d(-1.2vw,0,0) rotate(-.18deg) skewX(-.7deg) scale(1.008);letter-spacing:-.065em}
-  55%{opacity:1;transform:translate3d(.8vw,-1px,0) rotate(.12deg) scale(1.013)}
-  78%{opacity:1;transform:translate3d(2.8vw,1px,0) rotate(.22deg) scale(1.018)}
-  92%{opacity:.96;transform:translate3d(5.2vw,-1px,0) rotate(.35deg) skewX(1deg) scale(1.02)}
-  100%{opacity:0;transform:translate3d(15vw,-4px,0) rotate(.8deg) skewX(3deg) scale(1.03)}
+@keyframes glideDown{
+  0%{opacity:0;transform:translate3d(0,-22vh,0) scale(.965);filter:blur(4px);letter-spacing:-.03em}
+  18%{opacity:.68;transform:translate3d(0,-7vh,0) scale(.982);filter:blur(1.8px);letter-spacing:-.05em}
+  34%{opacity:1;transform:translate3d(0,-1.2vh,0) scale(1.004);filter:blur(0);letter-spacing:-.065em}
+  58%{opacity:1;transform:translate3d(0,0,0) scale(1.008);filter:blur(0)}
+  82%{opacity:.98;transform:translate3d(0,2.4vh,0) scale(1.01);filter:blur(.15px)}
+  100%{opacity:0;transform:translate3d(0,8.5vh,0) scale(1.018);filter:blur(2.2px)}
 }
-@keyframes skidRight{
-  0%{opacity:0;transform:translate3d(38vw,16px,0) rotate(2.4deg) skewX(9deg) scale(.90);letter-spacing:-.015em}
-  15%{opacity:1;transform:translate3d(-4.8vw,-3px,0) rotate(-.6deg) skewX(-2.5deg) scale(1.035);letter-spacing:-.055em}
-  28%{opacity:1;transform:translate3d(1.2vw,0,0) rotate(.18deg) skewX(.7deg) scale(1.008);letter-spacing:-.065em}
-  55%{opacity:1;transform:translate3d(-.8vw,-1px,0) rotate(-.12deg) scale(1.013)}
-  78%{opacity:1;transform:translate3d(-2.8vw,1px,0) rotate(-.22deg) scale(1.018)}
-  92%{opacity:.96;transform:translate3d(-5.2vw,-1px,0) rotate(-.35deg) skewX(-1deg) scale(1.02)}
-  100%{opacity:0;transform:translate3d(-15vw,-4px,0) rotate(-.8deg) skewX(-3deg) scale(1.03)}
+@keyframes trailDown{
+  0%{opacity:0;transform:translate3d(0,-17vh,0) scale(.97);filter:blur(5px)}
+  18%{opacity:.20;transform:translate3d(0,-10vh,0) scale(.982);filter:blur(3.2px)}
+  38%{opacity:.14;transform:translate3d(0,-5.2vh,0) scale(.992);filter:blur(2.4px)}
+  65%{opacity:.08;transform:translate3d(0,-2.4vh,0) scale(1);filter:blur(1.8px)}
+  100%{opacity:0;transform:translate3d(0,3.8vh,0) scale(1.01);filter:blur(3.8px)}
 }
-@keyframes trailLeft{
-  0%,5%{opacity:0;transform:translate3d(-9vw,0,0) scale(.98)}
-  16%{opacity:.26;transform:translate3d(-2.8vw,0,0) scale(1)}
-  34%{opacity:.10;transform:translate3d(-1.2vw,0,0)}
-  76%{opacity:.08;transform:translate3d(-2vw,0,0)}
-  100%{opacity:0;transform:translate3d(-8vw,0,0)}
-}
-@keyframes trailLeft2{
-  0%,8%{opacity:0;transform:translate3d(-14vw,0,0)}
-  18%{opacity:.16;transform:translate3d(-4.4vw,0,0)}
-  40%{opacity:.05;transform:translate3d(-1.8vw,0,0)}
-  100%{opacity:0;transform:translate3d(-10vw,0,0)}
-}
-@keyframes trailRight{
-  0%,5%{opacity:0;transform:translate3d(9vw,0,0) scale(.98)}
-  16%{opacity:.26;transform:translate3d(2.8vw,0,0) scale(1)}
-  34%{opacity:.10;transform:translate3d(1.2vw,0,0)}
-  76%{opacity:.08;transform:translate3d(2vw,0,0)}
-  100%{opacity:0;transform:translate3d(8vw,0,0)}
-}
-@keyframes trailRight2{
-  0%,8%{opacity:0;transform:translate3d(14vw,0,0)}
-  18%{opacity:.16;transform:translate3d(4.4vw,0,0)}
-  40%{opacity:.05;transform:translate3d(1.8vw,0,0)}
-  100%{opacity:0;transform:translate3d(10vw,0,0)}
+@keyframes trailDown2{
+  0%{opacity:0;transform:translate3d(0,-25vh,0) scale(.955);filter:blur(7px)}
+  22%{opacity:.11;transform:translate3d(0,-14vh,0) scale(.975);filter:blur(5.5px)}
+  45%{opacity:.075;transform:translate3d(0,-8vh,0) scale(.988);filter:blur(4px)}
+  72%{opacity:.04;transform:translate3d(0,-4vh,0) scale(.998);filter:blur(3px)}
+  100%{opacity:0;transform:translate3d(0,1.5vh,0) scale(1.008);filter:blur(5px)}
 }
 @keyframes wordOut{to{opacity:0;transform:translate3d(0,-18px,0) scale(1.04)}}
 @keyframes flash{0%{opacity:.95}100%{opacity:0}}
@@ -216,7 +191,7 @@ button{-webkit-tap-highlight-color:transparent}
 <script>
 (() => {
   const START = 108.92;
-  const END = 121.55;
+  const END = 121.85;
   const VIDEO_ID = 'x47TgeRJtH0';
 
   const screens = [...document.querySelectorAll('.screen')];
@@ -243,7 +218,7 @@ button{-webkit-tap-highlight-color:transparent}
   const words = [
     ['WE', 109.45], ['WERE', 109.62], ['TOO', 109.76], ['CLOSE', 110.17], ['TO', 110.66], ['THE', 111.02], ['STARS', 111.70],
     ['I', 112.90], ['NEVER', 113.48], ['KNEW', 113.76], ['SOMEBODY', 114.02], ['LIKE', 114.96], ['YOU,', 116.35], ['SOMEBODY', 116.60],
-    ["FALLIN'", 118.30], ['JUST', 118.60], ['AS', 118.92], ['HARD', 119.50]
+    ["FALLIN'", 118.30], ['JUST', 119.12], ['AS', 119.48], ['HARD', 119.86]
   ];
 
   function showScreen(target){
@@ -303,9 +278,9 @@ button{-webkit-tap-highlight-color:transparent}
     const currentTime = words[i][1];
     const nextTime = i < words.length - 1 ? words[i + 1][1] : END - .15;
     const duration = Math.max(.42, nextTime - currentTime);
-    const direction = i % 2 === 0 ? 'motion-left' : 'motion-right';
+    const direction = 'motion-down';
 
-    wordEl.classList.remove('motion-left','motion-right','hide','blue-word');
+    wordEl.classList.remove('motion-down','hide','blue-word');
     void wordEl.offsetWidth;
     wordEl.textContent = words[i][0];
     wordEl.dataset.word = words[i][0];
@@ -342,7 +317,7 @@ button{-webkit-tap-highlight-color:transparent}
   function beginVisuals(){
     currentWord = -1;
     endLove.classList.remove('visible');
-    wordEl.classList.remove('motion-left','motion-right','hide','blue-word');
+    wordEl.classList.remove('motion-down','hide','blue-word');
     wordEl.textContent = '';
     cancelAnimationFrame(raf);
     loop();
