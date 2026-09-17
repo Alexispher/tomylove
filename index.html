@@ -139,14 +139,18 @@
       font-size: clamp(16px, 1.35vw, 22px);
       font-weight: 700;
       letter-spacing: .34em;
-      color: rgba(213, 240, 255, .68);
+      color: rgba(213, 240, 255, .8);
       text-transform: uppercase;
+      text-shadow:
+        0 0 12px rgba(133, 220, 255, .18),
+        0 0 28px rgba(55, 151, 255, .14);
     }
 
     .lyrics {
       display: grid;
       gap: clamp(22px, 3.2vh, 42px);
       margin: 0;
+      perspective: 1400px;
     }
 
     .line {
@@ -159,28 +163,93 @@
       font-weight: 790;
       color: var(--muted);
       text-wrap: balance;
+      transform-style: preserve-3d;
       transition:
         color .65s cubic-bezier(.2,.8,.2,1),
         transform .65s cubic-bezier(.2,.8,.2,1),
         opacity .65s cubic-bezier(.2,.8,.2,1),
-        text-shadow .65s cubic-bezier(.2,.8,.2,1);
-      opacity: .72;
-      transform: translateX(0);
+        text-shadow .65s cubic-bezier(.2,.8,.2,1),
+        filter .65s cubic-bezier(.2,.8,.2,1);
+      opacity: .74;
+      transform: translateX(0) rotateX(0deg) rotateY(0deg);
+      filter: saturate(.9);
+      text-shadow:
+        0 0 10px rgba(82, 181, 255, .05),
+        0 1px 0 rgba(255,255,255,.03);
+    }
+
+    .line::before,
+    .line::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition:
+        opacity .65s cubic-bezier(.2,.8,.2,1),
+        transform .65s cubic-bezier(.2,.8,.2,1),
+        filter .65s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .line::before {
+      color: rgba(4, 20, 54, .96);
+      z-index: -1;
+      transform: translate3d(0, 0, -1px);
+      text-shadow:
+        1px 1px 0 rgba(9, 28, 69, .95),
+        2px 2px 0 rgba(9, 28, 69, .88),
+        3px 3px 0 rgba(9, 28, 69, .78),
+        4px 4px 0 rgba(10, 31, 76, .7),
+        6px 6px 16px rgba(14, 52, 118, .52),
+        0 0 18px rgba(34, 137, 255, .12);
+      filter: blur(.1px);
+    }
+
+    .line::after {
+      z-index: 1;
+      color: transparent;
+      background: linear-gradient(180deg, #ffffff 0%, #dff8ff 12%, #99e6ff 30%, #5ec9ff 50%, #2aaeff 72%, #7c63ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      text-shadow:
+        0 0 16px rgba(112, 212, 255, .36),
+        0 0 34px rgba(45, 166, 255, .28),
+        0 0 62px rgba(81, 109, 255, .2);
+      filter: brightness(1.02) saturate(1.12);
     }
 
     .line.active {
       color: transparent;
       opacity: 1;
-      transform: translateX(14px);
-      background: linear-gradient(92deg, var(--blue-0) 0%, var(--blue-1) 34%, var(--blue-2) 65%, var(--blue-4) 100%);
+      transform: translateX(14px) rotateX(7deg) rotateY(-4deg) scale(1.015);
+      background: linear-gradient(180deg, #ffffff 0%, #dff8ff 14%, #9de7ff 36%, #5ec9ff 56%, #2aaeff 72%, #7a60ff 100%);
       -webkit-background-clip: text;
       background-clip: text;
-      text-shadow: 0 0 28px rgba(67, 183, 255, .20);
+      text-shadow:
+        0 0 18px rgba(125, 213, 255, .26),
+        0 0 42px rgba(67, 183, 255, .24),
+        0 0 72px rgba(88, 105, 255, .18);
+      filter: saturate(1.15) brightness(1.05);
+      animation: linePulse 2.8s ease-in-out infinite;
+    }
+
+    .line.active::before {
+      opacity: 1;
+      transform: translate3d(8px, 10px, -14px) skewX(-3deg) scale(1.01);
+    }
+
+    .line.active::after {
+      opacity: 1;
+      transform: translate3d(0, 0, 14px);
+      animation: shineSweep 2.9s linear infinite, flickerGlow 1.75s ease-in-out infinite;
     }
 
     .line.past {
-      color: rgba(154, 211, 255, .43);
-      opacity: .88;
+      color: rgba(154, 211, 255, .46);
+      opacity: .9;
+      text-shadow:
+        0 0 12px rgba(94, 188, 255, .08),
+        0 0 26px rgba(79, 138, 255, .04);
     }
 
     .pulse {
@@ -258,6 +327,42 @@
       50% { scale: 1.05; opacity: .9; }
     }
 
+    @keyframes linePulse {
+      0%, 100% {
+        transform: translateX(14px) rotateX(7deg) rotateY(-4deg) scale(1.015);
+      }
+      50% {
+        transform: translateX(14px) rotateX(6deg) rotateY(-3deg) scale(1.032);
+      }
+    }
+
+    @keyframes shineSweep {
+      0% {
+        filter: brightness(.98) saturate(1.08);
+      }
+      50% {
+        filter: brightness(1.22) saturate(1.2);
+      }
+      100% {
+        filter: brightness(.98) saturate(1.08);
+      }
+    }
+
+    @keyframes flickerGlow {
+      0%, 100% {
+        text-shadow:
+          0 0 16px rgba(112, 212, 255, .34),
+          0 0 34px rgba(45, 166, 255, .28),
+          0 0 62px rgba(81, 109, 255, .22);
+      }
+      50% {
+        text-shadow:
+          0 0 18px rgba(155, 232, 255, .5),
+          0 0 44px rgba(68, 188, 255, .34),
+          0 0 82px rgba(99, 114, 255, .28);
+      }
+    }
+
     @media (max-width: 900px) {
       body { overflow-y: auto; }
       .frame {
@@ -278,7 +383,7 @@
       .title { margin-bottom: 28px; }
       .lyrics { gap: 21px; }
       .line { max-width: 13ch; font-size: clamp(36px, 10vw, 62px); }
-      .line.active { transform: translateX(8px); }
+      .line.active { transform: translateX(8px) rotateX(5deg) rotateY(-3deg) scale(1.01); }
     }
 
     @media (max-width: 520px) {
@@ -521,6 +626,10 @@
         event.preventDefault();
         toggleSegment();
       }
+    });
+
+    lyricNodes.forEach(node => {
+      node.dataset.text = node.textContent.trim();
     });
 
     const yt = document.createElement('script');
