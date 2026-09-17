@@ -75,10 +75,18 @@ button{-webkit-tap-highlight-color:transparent}
 .cinema-bloom{position:absolute;left:50%;top:50%;width:min(78vw,1100px);height:min(24vw,280px);transform:translate(-50%,-50%);pointer-events:none;z-index:0;opacity:.48;background:radial-gradient(ellipse,rgba(100,196,255,.16) 0%,rgba(32,116,255,.075) 32%,transparent 70%);filter:blur(26px);animation:bloomDrift 7s ease-in-out infinite}
 .cinema-flare{position:absolute;left:50%;top:50%;width:min(78vw,1050px);height:2px;transform:translate(-50%,-50%);pointer-events:none;z-index:1;opacity:.18;background:linear-gradient(90deg,transparent 0%,rgba(70,184,255,.08) 18%,rgba(183,232,255,.75) 50%,rgba(70,184,255,.08) 82%,transparent 100%);box-shadow:0 0 18px rgba(70,184,255,.32),0 0 46px rgba(23,107,255,.18)}
 .edit-kicker{position:absolute;top:max(28px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.48em;text-transform:uppercase;color:#4f5968;white-space:nowrap}
-.word{position:relative;z-index:3;max-width:94vw;margin:0;font-size:clamp(58px,13vw,180px);line-height:.83;letter-spacing:-.065em;font-weight:950;text-transform:uppercase;color:#fff;opacity:0;transform:translateY(26px) scale(.90);text-shadow:0 0 8px rgba(255,255,255,.16),0 0 22px rgba(139,216,255,.08);will-change:transform,opacity}
-.word.show{animation:wordHit .58s cubic-bezier(.16,.85,.2,1) forwards;text-shadow:0 0 8px rgba(255,255,255,.34),0 0 22px rgba(183,232,255,.22),0 0 52px rgba(70,184,255,.18),0 0 100px rgba(23,107,255,.10)}
-.word.blue-word{color:#f7fcff;text-shadow:0 0 8px rgba(255,255,255,.44),0 0 20px rgba(183,232,255,.52),0 0 48px rgba(70,184,255,.42),0 0 105px rgba(23,107,255,.26)}
-.word.hide{animation:wordOut .28s ease forwards}
+.word{position:relative;z-index:3;max-width:94vw;margin:0;font-size:clamp(58px,13vw,180px);line-height:.83;letter-spacing:-.065em;font-weight:950;text-transform:uppercase;color:#fff;opacity:0;transform:translate3d(0,0,0);text-shadow:0 0 8px rgba(255,255,255,.20),0 0 26px rgba(139,216,255,.10);will-change:transform,opacity;backface-visibility:hidden;perspective:1000px}
+.word::before,.word::after{content:attr(data-word);position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:0;color:#52bdff;will-change:transform,opacity}
+.word::before{text-shadow:0 0 20px rgba(70,184,255,.35),0 0 46px rgba(23,107,255,.22)}
+.word::after{color:#bceaff;text-shadow:0 0 12px rgba(139,216,255,.28)}
+.word.motion-left{animation:skidLeft var(--wordDur,.72s) linear forwards;text-shadow:0 0 8px rgba(255,255,255,.36),0 0 24px rgba(183,232,255,.24),0 0 54px rgba(70,184,255,.20),0 0 105px rgba(23,107,255,.11)}
+.word.motion-right{animation:skidRight var(--wordDur,.72s) linear forwards;text-shadow:0 0 8px rgba(255,255,255,.36),0 0 24px rgba(183,232,255,.24),0 0 54px rgba(70,184,255,.20),0 0 105px rgba(23,107,255,.11)}
+.word.motion-left::before{animation:trailLeft var(--wordDur,.72s) linear forwards}
+.word.motion-left::after{animation:trailLeft2 var(--wordDur,.72s) linear forwards}
+.word.motion-right::before{animation:trailRight var(--wordDur,.72s) linear forwards}
+.word.motion-right::after{animation:trailRight2 var(--wordDur,.72s) linear forwards}
+.word.blue-word{color:#fbfdff;text-shadow:0 0 8px rgba(255,255,255,.52),0 0 21px rgba(183,232,255,.58),0 0 52px rgba(70,184,255,.46),0 0 115px rgba(23,107,255,.28)}
+.word.hide{animation:wordOut .32s ease forwards}
 
 .flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at center,rgba(166,229,255,.28),rgba(38,137,255,.12) 24%,transparent 58%)}
 .flash.hit{animation:flash .38s ease-out}
@@ -89,12 +97,51 @@ button{-webkit-tap-highlight-color:transparent}
 
 #yt{position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;opacity:0;pointer-events:none}
 
-@keyframes wordHit{
-  0%{opacity:0;transform:translateY(28px) scale(.88);letter-spacing:-.02em}
-  48%{opacity:1;transform:translateY(-2px) scale(1.026);letter-spacing:-.065em}
-  100%{opacity:1;transform:translateY(0) scale(1);letter-spacing:-.065em}
+@keyframes skidLeft{
+  0%{opacity:0;transform:translate3d(-38vw,16px,0) rotate(-2.4deg) skewX(-9deg) scale(.90);letter-spacing:-.015em}
+  15%{opacity:1;transform:translate3d(4.8vw,-3px,0) rotate(.6deg) skewX(2.5deg) scale(1.035);letter-spacing:-.055em}
+  28%{opacity:1;transform:translate3d(-1.2vw,0,0) rotate(-.18deg) skewX(-.7deg) scale(1.008);letter-spacing:-.065em}
+  55%{opacity:1;transform:translate3d(.8vw,-1px,0) rotate(.12deg) scale(1.013)}
+  78%{opacity:1;transform:translate3d(2.8vw,1px,0) rotate(.22deg) scale(1.018)}
+  92%{opacity:.96;transform:translate3d(5.2vw,-1px,0) rotate(.35deg) skewX(1deg) scale(1.02)}
+  100%{opacity:0;transform:translate3d(15vw,-4px,0) rotate(.8deg) skewX(3deg) scale(1.03)}
 }
-@keyframes wordOut{to{opacity:0;transform:translateY(-16px) scale(1.045)}}
+@keyframes skidRight{
+  0%{opacity:0;transform:translate3d(38vw,16px,0) rotate(2.4deg) skewX(9deg) scale(.90);letter-spacing:-.015em}
+  15%{opacity:1;transform:translate3d(-4.8vw,-3px,0) rotate(-.6deg) skewX(-2.5deg) scale(1.035);letter-spacing:-.055em}
+  28%{opacity:1;transform:translate3d(1.2vw,0,0) rotate(.18deg) skewX(.7deg) scale(1.008);letter-spacing:-.065em}
+  55%{opacity:1;transform:translate3d(-.8vw,-1px,0) rotate(-.12deg) scale(1.013)}
+  78%{opacity:1;transform:translate3d(-2.8vw,1px,0) rotate(-.22deg) scale(1.018)}
+  92%{opacity:.96;transform:translate3d(-5.2vw,-1px,0) rotate(-.35deg) skewX(-1deg) scale(1.02)}
+  100%{opacity:0;transform:translate3d(-15vw,-4px,0) rotate(-.8deg) skewX(-3deg) scale(1.03)}
+}
+@keyframes trailLeft{
+  0%,5%{opacity:0;transform:translate3d(-9vw,0,0) scale(.98)}
+  16%{opacity:.26;transform:translate3d(-2.8vw,0,0) scale(1)}
+  34%{opacity:.10;transform:translate3d(-1.2vw,0,0)}
+  76%{opacity:.08;transform:translate3d(-2vw,0,0)}
+  100%{opacity:0;transform:translate3d(-8vw,0,0)}
+}
+@keyframes trailLeft2{
+  0%,8%{opacity:0;transform:translate3d(-14vw,0,0)}
+  18%{opacity:.16;transform:translate3d(-4.4vw,0,0)}
+  40%{opacity:.05;transform:translate3d(-1.8vw,0,0)}
+  100%{opacity:0;transform:translate3d(-10vw,0,0)}
+}
+@keyframes trailRight{
+  0%,5%{opacity:0;transform:translate3d(9vw,0,0) scale(.98)}
+  16%{opacity:.26;transform:translate3d(2.8vw,0,0) scale(1)}
+  34%{opacity:.10;transform:translate3d(1.2vw,0,0)}
+  76%{opacity:.08;transform:translate3d(2vw,0,0)}
+  100%{opacity:0;transform:translate3d(8vw,0,0)}
+}
+@keyframes trailRight2{
+  0%,8%{opacity:0;transform:translate3d(14vw,0,0)}
+  18%{opacity:.16;transform:translate3d(4.4vw,0,0)}
+  40%{opacity:.05;transform:translate3d(1.8vw,0,0)}
+  100%{opacity:0;transform:translate3d(10vw,0,0)}
+}
+@keyframes wordOut{to{opacity:0;transform:translate3d(0,-18px,0) scale(1.04)}}
 @keyframes flash{0%{opacity:.95}100%{opacity:0}}
 @keyframes streak{0%{opacity:0;width:0}34%{opacity:.9;width:min(72vw,850px)}100%{opacity:0;width:min(90vw,1100px)}}
 @keyframes cinemaBreath{50%{opacity:1;transform:scale(1.025)}}
@@ -194,8 +241,8 @@ button{-webkit-tap-highlight-color:transparent}
   let currentWord = -1;
 
   const words = [
-    ['WE', 109.45], ['WERE', 109.40], ['TOO', 109.76], ['CLOSE', 110.17], ['TO', 110.66], ['THE', 111.02], ['STARS', 111.70],
-    ['I', 112.90], ['NEVER', 113.30], ['KNEW', 113.48], ['SOMEBODY', 116.02], ['LIKE', 114.96], ['YOU,', 116.35], ['SOMEBODY', 116.60],
+    ['WE', 109.45], ['WERE', 109.62], ['TOO', 109.76], ['CLOSE', 110.17], ['TO', 110.66], ['THE', 111.02], ['STARS', 111.70],
+    ['I', 112.90], ['NEVER', 113.48], ['KNEW', 113.76], ['SOMEBODY', 114.02], ['LIKE', 114.96], ['YOU,', 116.35], ['SOMEBODY', 116.60],
     ["FALLIN'", 118.30], ['JUST', 118.60], ['AS', 118.92], ['HARD', 119.50]
   ];
 
@@ -252,11 +299,19 @@ button{-webkit-tap-highlight-color:transparent}
     if(i === currentWord) return;
     currentWord = i;
     if(i < 0 || i >= words.length) return;
-    wordEl.classList.remove('show','hide','blue-word');
+
+    const currentTime = words[i][1];
+    const nextTime = i < words.length - 1 ? words[i + 1][1] : END - .15;
+    const duration = Math.max(.42, nextTime - currentTime);
+    const direction = i % 2 === 0 ? 'motion-left' : 'motion-right';
+
+    wordEl.classList.remove('motion-left','motion-right','hide','blue-word');
     void wordEl.offsetWidth;
     wordEl.textContent = words[i][0];
+    wordEl.dataset.word = words[i][0];
+    wordEl.style.setProperty('--wordDur', duration + 's');
     if(['STARS','YOU,','SOMEBODY','HARD'].includes(words[i][0])) wordEl.classList.add('blue-word');
-    wordEl.classList.add('show');
+    wordEl.classList.add(direction);
     hitFX();
   }
 
@@ -287,7 +342,7 @@ button{-webkit-tap-highlight-color:transparent}
   function beginVisuals(){
     currentWord = -1;
     endLove.classList.remove('visible');
-    wordEl.classList.remove('show','hide','blue-word');
+    wordEl.classList.remove('motion-left','motion-right','hide','blue-word');
     wordEl.textContent = '';
     cancelAnimationFrame(raf);
     loop();
