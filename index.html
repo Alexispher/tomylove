@@ -3,643 +3,260 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#030711" />
+  <meta name="theme-color" content="#020611" />
   <meta name="color-scheme" content="dark" />
   <title>TO MY LOVE</title>
   <style>
-    :root {
-      --bg-0: #02050d;
-      --bg-1: #06142b;
-      --blue-0: #dff7ff;
-      --blue-1: #77ddff;
-      --blue-2: #2aaeff;
-      --blue-3: #1266ff;
-      --blue-4: #6b5cff;
-      --muted: rgba(194, 226, 255, 0.24);
+    :root{
+      --bg:#020611;
+      --ice:#eafdff;
+      --cyan:#8de8ff;
+      --blue:#29a8ff;
+      --deep:#245cff;
+      --violet:#806bff;
     }
 
-    * { box-sizing: border-box; }
-
-    html, body {
-      width: 100%;
-      min-height: 100%;
-      margin: 0;
-      background: var(--bg-0);
-      overflow: hidden;
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#020611}
+    body{
+      font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:white;
+      -webkit-font-smoothing:antialiased;
+      user-select:none;
+      cursor:pointer;
     }
 
-    body {
-      min-height: 100svh;
-      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: white;
-      -webkit-font-smoothing: antialiased;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    .sky {
-      position: fixed;
-      inset: 0;
-      isolation: isolate;
+    .scene{
+      position:fixed;inset:0;isolation:isolate;overflow:hidden;
       background:
-        radial-gradient(circle at 18% 50%, rgba(18, 102, 255, .20), transparent 31%),
-        radial-gradient(circle at 76% 18%, rgba(42, 174, 255, .12), transparent 30%),
-        radial-gradient(circle at 72% 74%, rgba(107, 92, 255, .15), transparent 26%),
-        linear-gradient(135deg, #01030a 0%, #041022 43%, #020710 100%);
+        radial-gradient(circle at 50% 44%,rgba(34,123,255,.22),transparent 24%),
+        radial-gradient(circle at 50% 50%,rgba(32,183,255,.10),transparent 42%),
+        radial-gradient(circle at 18% 24%,rgba(90,104,255,.12),transparent 28%),
+        linear-gradient(145deg,#01030a 0%,#031126 44%,#020611 100%);
     }
 
-    .sky::before,
-    .sky::after {
-      content: "";
-      position: absolute;
-      inset: -20%;
-      pointer-events: none;
+    .scene::before{
+      content:"";position:absolute;inset:-35%;z-index:-5;
+      background:conic-gradient(from 0deg at 50% 50%,transparent 0 17%,rgba(54,145,255,.055) 23%,transparent 31% 52%,rgba(100,83,255,.045) 59%,transparent 66%);
+      filter:blur(38px);animation:nebula 18s linear infinite;
     }
 
-    .sky::before {
-      z-index: -3;
-      background:
-        repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,.025) 0 1px, transparent 1px 10px),
-        radial-gradient(circle at 40% 40%, rgba(44, 180, 255, .10), transparent 38%);
-      opacity: .22;
-      filter: blur(.2px);
-      animation: drift 26s linear infinite alternate;
+    .vignette{position:absolute;inset:0;z-index:20;pointer-events:none;box-shadow:inset 0 0 170px 65px rgba(0,0,0,.78)}
+    .grain{position:absolute;inset:-100%;z-index:19;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");animation:grain .28s steps(2) infinite}
+
+    .stars,.stars2{position:absolute;inset:-20%;z-index:-4;pointer-events:none;background-repeat:repeat;transform:translateZ(0)}
+    .stars{opacity:.72;background-image:radial-gradient(circle,rgba(255,255,255,.88) 0 1px,transparent 1.35px);background-size:118px 118px;animation:starsA 34s linear infinite}
+    .stars2{opacity:.5;background-image:radial-gradient(circle,rgba(86,191,255,.92) 0 1px,transparent 1.4px),radial-gradient(circle,rgba(136,111,255,.7) 0 .8px,transparent 1.25px);background-size:191px 191px,269px 269px;background-position:32px 18px,101px 72px;animation:starsB 48s linear infinite}
+
+    #fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;mix-blend-mode:screen}
+
+    .ambient-ring{position:absolute;left:50%;top:50%;width:min(74vw,880px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;z-index:-2;pointer-events:none;border:1px solid rgba(124,212,255,.04);box-shadow:0 0 120px rgba(35,133,255,.08),inset 0 0 100px rgba(54,142,255,.03);animation:ringBreath 6s ease-in-out infinite}
+
+    .intro{
+      position:absolute;inset:0;z-index:8;display:grid;place-items:center;text-align:center;
+      transition:opacity .8s ease,visibility .8s ease,filter .8s ease;
+    }
+    .intro.hidden{opacity:0;visibility:hidden;filter:blur(12px)}
+    .intro-inner{position:relative;transform-style:preserve-3d;perspective:1000px;padding:24px}
+    .intro-title{
+      margin:0;font-size:clamp(54px,10vw,158px);line-height:.82;letter-spacing:-.075em;font-weight:900;
+      color:transparent;background:linear-gradient(180deg,#fff 0%,#e7fbff 17%,#a2eaff 38%,#47bfff 64%,#526dff 100%);-webkit-background-clip:text;background-clip:text;
+      text-shadow:0 0 18px rgba(166,232,255,.35),0 0 42px rgba(54,169,255,.28),0 0 92px rgba(47,84,255,.22);
+      filter:drop-shadow(10px 14px 0 rgba(6,24,70,.58));
+      animation:introFloat 3.6s ease-in-out infinite;
+    }
+    .intro-title::after{content:"TO MY LOVE";position:absolute;inset:24px;color:transparent;-webkit-text-stroke:1px rgba(220,249,255,.22);transform:translate3d(10px,13px,-20px);filter:blur(.2px);z-index:-1}
+    .tap{margin-top:24px;font-size:clamp(11px,1vw,14px);letter-spacing:.36em;text-transform:uppercase;color:rgba(211,241,255,.54);animation:tapPulse 1.8s ease-in-out infinite}
+
+    .lyric-stage{position:absolute;inset:0;z-index:7;display:grid;place-items:center;padding:clamp(22px,5vw,84px);perspective:1500px;pointer-events:none}
+    .lyric{
+      position:absolute;width:min(92vw,1280px);margin:0;text-align:center;
+      font-size:clamp(44px,8.6vw,142px);line-height:.88;letter-spacing:-.065em;font-weight:900;text-transform:uppercase;
+      opacity:0;visibility:hidden;transform-style:preserve-3d;
+      color:transparent;background:linear-gradient(180deg,#fff 0%,#e8fbff 13%,#b8efff 30%,#6fd7ff 48%,#2caeff 68%,#556cff 87%,#856fff 100%);-webkit-background-clip:text;background-clip:text;
+      text-shadow:0 0 18px rgba(207,247,255,.26),0 0 36px rgba(89,202,255,.28),0 0 76px rgba(41,121,255,.34),0 0 130px rgba(100,74,255,.18);
+      filter:drop-shadow(9px 12px 0 rgba(4,22,65,.86)) drop-shadow(16px 23px 18px rgba(0,0,0,.35));
+      will-change:transform,opacity,filter;
+    }
+    .lyric::before,
+    .lyric::after{content:attr(data-text);position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+    .lyric::before{z-index:-2;color:#071637;transform:translate3d(13px,16px,-20px);text-shadow:1px 1px 0 #0a1b43,2px 2px 0 #0a1b43,3px 3px 0 #0a1b43,4px 4px 0 #0b1f50,5px 5px 0 #0c245c,6px 6px 0 #0d2968,10px 12px 22px rgba(1,7,25,.8)}
+    .lyric::after{z-index:2;color:transparent;background:linear-gradient(100deg,transparent 0 35%,rgba(255,255,255,.98) 47%,rgba(189,242,255,.96) 53%,transparent 66%);background-size:260% 100%;background-position:120% 0;-webkit-background-clip:text;background-clip:text;opacity:0;filter:blur(.1px)}
+
+    .lyric.enter{visibility:visible;animation:lyricEnter .95s cubic-bezier(.13,.88,.24,1.12) forwards,lyricHover 2.2s .95s ease-in-out infinite alternate}
+    .lyric.enter::after{animation:shine 1.15s .18s cubic-bezier(.2,.7,.3,1) forwards}
+    .lyric.exit{visibility:visible;animation:lyricExit .68s cubic-bezier(.55,.04,.9,.43) forwards}
+
+    .flash{position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(210,249,255,.56) 0%,rgba(65,173,255,.24) 14%,rgba(34,91,255,.07) 30%,transparent 56%);opacity:0;mix-blend-mode:screen}
+    .flash.fire{animation:flash .72s ease-out}
+    .shock{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;translate:-50% -50%;z-index:5;border:2px solid rgba(168,231,255,.85);opacity:0;pointer-events:none;box-shadow:0 0 24px rgba(70,183,255,.8),0 0 70px rgba(67,111,255,.35)}
+    .shock.fire{animation:shock 1.15s cubic-bezier(.1,.62,.18,1)}
+
+    .start-btn{position:fixed;left:50%;bottom:max(26px,env(safe-area-inset-bottom));translate:-50% 0;z-index:30;width:58px;height:58px;border-radius:50%;border:1px solid rgba(157,225,255,.26);background:rgba(4,17,43,.48);backdrop-filter:blur(14px);box-shadow:0 0 30px rgba(40,151,255,.15),inset 0 0 20px rgba(91,188,255,.08);display:grid;place-items:center;transition:.35s ease}
+    .start-btn::before{content:"";width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:13px solid #e7fbff;margin-left:4px;filter:drop-shadow(0 0 8px rgba(101,211,255,.65))}
+    body.playing .start-btn{opacity:.16;transform:scale(.82)}
+
+    #youtubeAudio{position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:.001;pointer-events:none}
+
+    @keyframes nebula{to{transform:rotate(360deg)}}
+    @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(3%,-2%)}50%{transform:translate(-2%,3%)}75%{transform:translate(1%,4%)}100%{transform:translate(-3%,-1%)}}
+    @keyframes starsA{to{transform:translate3d(-90px,-70px,0)}}
+    @keyframes starsB{to{transform:translate3d(85px,-110px,0)}}
+    @keyframes ringBreath{0%,100%{scale:.88;opacity:.35}50%{scale:1.08;opacity:.78}}
+    @keyframes introFloat{0%,100%{transform:rotateX(0deg) rotateY(0deg) scale(1)}50%{transform:rotateX(4deg) rotateY(-3deg) scale(1.02)}}
+    @keyframes tapPulse{0%,100%{opacity:.34}50%{opacity:.82}}
+    @keyframes lyricEnter{
+      0%{opacity:0;filter:blur(22px) brightness(2.1);transform:translate3d(0,120px,-420px) rotateX(38deg) rotateZ(-3deg) scale(.52)}
+      48%{opacity:1;filter:blur(0) brightness(1.42);transform:translate3d(0,-10px,40px) rotateX(-4deg) rotateZ(.4deg) scale(1.065)}
+      100%{opacity:1;filter:blur(0) brightness(1.08);transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1)}
+    }
+    @keyframes lyricHover{
+      from{transform:translate3d(0,0,0) rotateX(0deg) rotateY(-1.2deg) scale(1);text-shadow:0 0 18px rgba(207,247,255,.24),0 0 38px rgba(89,202,255,.25),0 0 75px rgba(41,121,255,.29),0 0 125px rgba(100,74,255,.16)}
+      to{transform:translate3d(0,-7px,24px) rotateX(1.5deg) rotateY(1.2deg) scale(1.018);text-shadow:0 0 22px rgba(225,251,255,.4),0 0 48px rgba(89,202,255,.34),0 0 96px rgba(41,121,255,.38),0 0 150px rgba(100,74,255,.22)}
+    }
+    @keyframes lyricExit{
+      0%{opacity:1;filter:blur(0) brightness(1.1);transform:translate3d(0,0,0) rotateX(0) scale(1)}
+      45%{opacity:1;filter:blur(1px) brightness(1.75);transform:translate3d(0,-8px,85px) rotateX(-5deg) scale(1.08)}
+      100%{opacity:0;filter:blur(24px) brightness(2.2);transform:translate3d(0,-150px,280px) rotateX(-32deg) rotateZ(2deg) scale(1.32)}
+    }
+    @keyframes shine{0%{opacity:0;background-position:120% 0}18%{opacity:1}75%{opacity:.82}100%{opacity:0;background-position:-120% 0}}
+    @keyframes flash{0%{opacity:0}8%{opacity:1}30%{opacity:.42}100%{opacity:0}}
+    @keyframes shock{0%{opacity:.95;width:12px;height:12px}100%{opacity:0;width:min(96vw,1250px);height:min(96vw,1250px);border-width:1px}}
+
+    @media(max-width:700px){
+      .lyric{font-size:clamp(40px,13.4vw,80px);line-height:.9;width:92vw}
+      .intro-title{font-size:clamp(58px,19vw,100px);line-height:.8}
+      .lyric::before{transform:translate3d(8px,11px,-18px)}
+      .vignette{box-shadow:inset 0 0 110px 30px rgba(0,0,0,.78)}
     }
 
-    .sky::after {
-      z-index: -2;
-      background: linear-gradient(90deg, transparent, rgba(92, 191, 255, .04), transparent);
-      filter: blur(36px);
-      transform: rotate(-12deg);
-      animation: sweep 12s ease-in-out infinite alternate;
-    }
-
-    .starfield {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      opacity: .64;
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,.85) 0 1px, transparent 1.25px),
-        radial-gradient(circle, rgba(83,188,255,.66) 0 1px, transparent 1.3px),
-        radial-gradient(circle, rgba(127,112,255,.58) 0 .8px, transparent 1.2px);
-      background-size: 123px 123px, 191px 191px, 271px 271px;
-      background-position: 20px 40px, 71px 18px, 4px 122px;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.45));
-      animation: stars 32s linear infinite;
-    }
-
-    #loveCanvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      filter: drop-shadow(0 0 18px rgba(41, 174, 255, .35));
-    }
-
-    .glow-orb {
-      position: absolute;
-      left: 19%;
-      top: 51%;
-      width: min(48vw, 660px);
-      aspect-ratio: 1;
-      translate: -50% -50%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(80, 190, 255, .15), rgba(23, 88, 255, .05) 42%, transparent 72%);
-      filter: blur(18px);
-      animation: breathe 5.2s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .frame {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: minmax(320px, .82fr) minmax(500px, 1.18fr);
-      align-items: center;
-      width: 100%;
-      min-height: 100svh;
-      padding: clamp(28px, 4.5vw, 76px);
-      gap: clamp(28px, 5vw, 94px);
-    }
-
-    .heart-space {
-      min-height: 58svh;
-    }
-
-    .message {
-      width: min(760px, 100%);
-      align-self: center;
-      transform: translateY(-1.2vh);
-    }
-
-    .title {
-      margin: 0 0 clamp(34px, 5vh, 68px);
-      font-size: clamp(16px, 1.35vw, 22px);
-      font-weight: 700;
-      letter-spacing: .34em;
-      color: rgba(213, 240, 255, .8);
-      text-transform: uppercase;
-      text-shadow:
-        0 0 12px rgba(133, 220, 255, .18),
-        0 0 28px rgba(55, 151, 255, .14);
-    }
-
-    .lyrics {
-      display: grid;
-      gap: clamp(22px, 3.2vh, 42px);
-      margin: 0;
-      perspective: 1400px;
-    }
-
-    .line {
-      position: relative;
-      margin: 0;
-      max-width: 14ch;
-      font-size: clamp(38px, 4.55vw, 78px);
-      line-height: .98;
-      letter-spacing: -.048em;
-      font-weight: 790;
-      color: var(--muted);
-      text-wrap: balance;
-      transform-style: preserve-3d;
-      transition:
-        color .65s cubic-bezier(.2,.8,.2,1),
-        transform .65s cubic-bezier(.2,.8,.2,1),
-        opacity .65s cubic-bezier(.2,.8,.2,1),
-        text-shadow .65s cubic-bezier(.2,.8,.2,1),
-        filter .65s cubic-bezier(.2,.8,.2,1);
-      opacity: .74;
-      transform: translateX(0) rotateX(0deg) rotateY(0deg);
-      filter: saturate(.9);
-      text-shadow:
-        0 0 10px rgba(82, 181, 255, .05),
-        0 1px 0 rgba(255,255,255,.03);
-    }
-
-    .line::before,
-    .line::after {
-      content: attr(data-text);
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0;
-      transition:
-        opacity .65s cubic-bezier(.2,.8,.2,1),
-        transform .65s cubic-bezier(.2,.8,.2,1),
-        filter .65s cubic-bezier(.2,.8,.2,1);
-    }
-
-    .line::before {
-      color: rgba(4, 20, 54, .96);
-      z-index: -1;
-      transform: translate3d(0, 0, -1px);
-      text-shadow:
-        1px 1px 0 rgba(9, 28, 69, .95),
-        2px 2px 0 rgba(9, 28, 69, .88),
-        3px 3px 0 rgba(9, 28, 69, .78),
-        4px 4px 0 rgba(10, 31, 76, .7),
-        6px 6px 16px rgba(14, 52, 118, .52),
-        0 0 18px rgba(34, 137, 255, .12);
-      filter: blur(.1px);
-    }
-
-    .line::after {
-      z-index: 1;
-      color: transparent;
-      background: linear-gradient(180deg, #ffffff 0%, #dff8ff 12%, #99e6ff 30%, #5ec9ff 50%, #2aaeff 72%, #7c63ff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-shadow:
-        0 0 16px rgba(112, 212, 255, .36),
-        0 0 34px rgba(45, 166, 255, .28),
-        0 0 62px rgba(81, 109, 255, .2);
-      filter: brightness(1.02) saturate(1.12);
-    }
-
-    .line.active {
-      color: transparent;
-      opacity: 1;
-      transform: translateX(14px) rotateX(7deg) rotateY(-4deg) scale(1.015);
-      background: linear-gradient(180deg, #ffffff 0%, #dff8ff 14%, #9de7ff 36%, #5ec9ff 56%, #2aaeff 72%, #7a60ff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-shadow:
-        0 0 18px rgba(125, 213, 255, .26),
-        0 0 42px rgba(67, 183, 255, .24),
-        0 0 72px rgba(88, 105, 255, .18);
-      filter: saturate(1.15) brightness(1.05);
-      animation: linePulse 2.8s ease-in-out infinite;
-    }
-
-    .line.active::before {
-      opacity: 1;
-      transform: translate3d(8px, 10px, -14px) skewX(-3deg) scale(1.01);
-    }
-
-    .line.active::after {
-      opacity: 1;
-      transform: translate3d(0, 0, 14px);
-      animation: shineSweep 2.9s linear infinite, flickerGlow 1.75s ease-in-out infinite;
-    }
-
-    .line.past {
-      color: rgba(154, 211, 255, .46);
-      opacity: .9;
-      text-shadow:
-        0 0 12px rgba(94, 188, 255, .08),
-        0 0 26px rgba(79, 138, 255, .04);
-    }
-
-    .pulse {
-      position: fixed;
-      left: 50%;
-      bottom: max(24px, env(safe-area-inset-bottom));
-      z-index: 5;
-      width: 54px;
-      height: 54px;
-      translate: -50% 0;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(134, 220, 255, .26);
-      border-radius: 50%;
-      background: rgba(7, 24, 48, .42);
-      box-shadow: inset 0 0 22px rgba(74, 180, 255, .08), 0 0 28px rgba(30, 146, 255, .13);
-      backdrop-filter: blur(16px);
-      transition: transform .25s ease, background .25s ease, border-color .25s ease, opacity .35s ease;
-    }
-
-    .pulse::before {
-      content: "";
-      width: 0;
-      height: 0;
-      border-top: 7px solid transparent;
-      border-bottom: 7px solid transparent;
-      border-left: 11px solid rgba(204, 241, 255, .92);
-      margin-left: 3px;
-      filter: drop-shadow(0 0 8px rgba(82, 192, 255, .5));
-      transition: .25s ease;
-    }
-
-    body.playing .pulse {
-      opacity: .5;
-      transform: scale(.86);
-    }
-
-    body.playing .pulse::before {
-      width: 12px;
-      height: 14px;
-      border: 0;
-      margin: 0;
-      background: linear-gradient(90deg, rgba(216,245,255,.94) 0 35%, transparent 35% 65%, rgba(216,245,255,.94) 65% 100%);
-      filter: drop-shadow(0 0 8px rgba(82, 192, 255, .5));
-    }
-
-    #youtubeAudio {
-      position: fixed;
-      width: 1px;
-      height: 1px;
-      left: -9999px;
-      top: -9999px;
-      overflow: hidden;
-      opacity: .001;
-      pointer-events: none;
-    }
-
-    @keyframes drift {
-      from { transform: translate3d(-2%, -1%, 0) rotate(-2deg); }
-      to { transform: translate3d(2%, 1%, 0) rotate(2deg); }
-    }
-
-    @keyframes sweep {
-      from { transform: translateX(-5%) rotate(-12deg); opacity: .55; }
-      to { transform: translateX(8%) rotate(-8deg); opacity: 1; }
-    }
-
-    @keyframes stars {
-      from { transform: translate3d(0,0,0); }
-      to { transform: translate3d(-70px, -40px, 0); }
-    }
-
-    @keyframes breathe {
-      0%, 100% { scale: .94; opacity: .58; }
-      50% { scale: 1.05; opacity: .9; }
-    }
-
-    @keyframes linePulse {
-      0%, 100% {
-        transform: translateX(14px) rotateX(7deg) rotateY(-4deg) scale(1.015);
-      }
-      50% {
-        transform: translateX(14px) rotateX(6deg) rotateY(-3deg) scale(1.032);
-      }
-    }
-
-    @keyframes shineSweep {
-      0% {
-        filter: brightness(.98) saturate(1.08);
-      }
-      50% {
-        filter: brightness(1.22) saturate(1.2);
-      }
-      100% {
-        filter: brightness(.98) saturate(1.08);
-      }
-    }
-
-    @keyframes flickerGlow {
-      0%, 100% {
-        text-shadow:
-          0 0 16px rgba(112, 212, 255, .34),
-          0 0 34px rgba(45, 166, 255, .28),
-          0 0 62px rgba(81, 109, 255, .22);
-      }
-      50% {
-        text-shadow:
-          0 0 18px rgba(155, 232, 255, .5),
-          0 0 44px rgba(68, 188, 255, .34),
-          0 0 82px rgba(99, 114, 255, .28);
-      }
-    }
-
-    @media (max-width: 900px) {
-      body { overflow-y: auto; }
-      .frame {
-        min-height: 100svh;
-        grid-template-columns: 1fr;
-        grid-template-rows: 42svh auto;
-        padding: 28px 24px 94px;
-        gap: 8px;
-      }
-      .heart-space { min-height: 38svh; }
-      .glow-orb { left: 50%; top: 26%; width: min(84vw, 560px); }
-      .message {
-        align-self: start;
-        transform: none;
-        width: min(640px, 100%);
-        margin: 0 auto;
-      }
-      .title { margin-bottom: 28px; }
-      .lyrics { gap: 21px; }
-      .line { max-width: 13ch; font-size: clamp(36px, 10vw, 62px); }
-      .line.active { transform: translateX(8px) rotateX(5deg) rotateY(-3deg) scale(1.01); }
-    }
-
-    @media (max-width: 520px) {
-      .frame { grid-template-rows: 38svh auto; padding-inline: 20px; }
-      .title { font-size: 13px; }
-      .line { font-size: clamp(34px, 11vw, 50px); }
-      .pulse { width: 48px; height: 48px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .sky::before, .sky::after, .starfield, .glow-orb { animation: none; }
-      .line, .pulse { transition: none; }
+    @media(prefers-reduced-motion:reduce){
+      .grain,.stars,.stars2,.scene::before,.ambient-ring,.intro-title,.tap{animation:none}
+      .lyric.enter{animation:fadeIn .5s ease forwards}.lyric.exit{animation:fadeOut .45s ease forwards}
+      @keyframes fadeIn{to{opacity:1;visibility:visible}}@keyframes fadeOut{to{opacity:0}}
     }
   </style>
 </head>
 <body>
-  <main class="sky" aria-label="TO MY LOVE">
-    <div class="starfield" aria-hidden="true"></div>
-    <div class="glow-orb" aria-hidden="true"></div>
-    <canvas id="loveCanvas" aria-hidden="true"></canvas>
+  <main class="scene" aria-label="TO MY LOVE">
+    <div class="stars"></div><div class="stars2"></div><div class="ambient-ring"></div>
+    <canvas id="fx"></canvas>
+    <div class="flash" id="flash"></div><div class="shock" id="shock"></div>
 
-    <section class="frame">
-      <div class="heart-space" aria-hidden="true"></div>
-      <div class="message">
-        <h1 class="title">TO MY LOVE</h1>
-        <div class="lyrics" aria-label="Lyrics">
-          <p class="line" data-time="108.92">WE WERE TOO CLOSE TO THE STARS</p>
-          <p class="line" data-time="112.58">I NEVER KNEW SOMEBODY LIKE YOU, SOMEBODY</p>
-          <p class="line" data-time="117.63">FALLIN' JUST AS HARD</p>
-        </div>
+    <section class="intro" id="intro">
+      <div class="intro-inner">
+        <h1 class="intro-title">TO MY LOVE</h1>
+        <div class="tap">TAP TO OPEN</div>
       </div>
     </section>
 
-    <div class="pulse" aria-hidden="true"></div>
+    <section class="lyric-stage" aria-label="Lyrics">
+      <p class="lyric" data-index="0" data-time="108.92" data-end="112.54">WE WERE TOO CLOSE TO THE STARS</p>
+      <p class="lyric" data-index="1" data-time="112.58" data-end="117.56">I NEVER KNEW SOMEBODY LIKE YOU, SOMEBODY</p>
+      <p class="lyric" data-index="2" data-time="117.63" data-end="120.72">FALLIN' JUST AS HARD</p>
+    </section>
+
+    <div class="start-btn" aria-hidden="true"></div>
+    <div class="vignette"></div><div class="grain"></div>
     <div id="youtubeAudio" aria-hidden="true"></div>
   </main>
 
   <script>
-    const START = 108.92;
-    const END = 120.88;
-    const VIDEO_ID = 'x47TgeRJtH0';
-    const lyricNodes = [...document.querySelectorAll('.line')];
-    const canvas = document.getElementById('loveCanvas');
-    const ctx = canvas.getContext('2d', { alpha: true });
-    const DPR = Math.min(window.devicePixelRatio || 1, 2);
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const START=108.92, END=120.82, VIDEO_ID='x47TgeRJtH0';
+    const lyrics=[...document.querySelectorAll('.lyric')];
+    lyrics.forEach(el=>el.dataset.text=el.textContent.trim());
+    const intro=document.getElementById('intro');
+    const flash=document.getElementById('flash');
+    const shock=document.getElementById('shock');
+    const canvas=document.getElementById('fx');
+    const ctx=canvas.getContext('2d');
+    const DPR=Math.min(devicePixelRatio||1,2);
+    let W=innerWidth,H=innerHeight,particles=[],player,ready=false,playing=false,queued=false,raf=0,lastIndex=-1;
 
-    let player;
-    let ready = false;
-    let playing = false;
-    let queuedPlay = false;
-    let monitorId = 0;
-    let width = 0;
-    let height = 0;
-    let particles = [];
-    let t = 0;
-
-    function resize() {
-      width = innerWidth;
-      height = innerHeight;
-      canvas.width = Math.floor(width * DPR);
-      canvas.height = Math.floor(height * DPR);
-      canvas.style.width = width + 'px';
-      canvas.style.height = height + 'px';
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-      buildHeart();
+    function resize(){
+      W=innerWidth;H=innerHeight;canvas.width=W*DPR;canvas.height=H*DPR;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);
     }
+    addEventListener('resize',resize,{passive:true});resize();
 
-    function heartPoint(a) {
-      const x = 16 * Math.sin(a) ** 3;
-      const y = 13 * Math.cos(a) - 5 * Math.cos(2 * a) - 2 * Math.cos(3 * a) - Math.cos(4 * a);
-      return { x, y: -y };
-    }
-
-    function buildHeart() {
-      const compact = width < 900;
-      const cx = compact ? width * .5 : width * .235;
-      const cy = compact ? height * .245 : height * .51;
-      const scale = compact ? Math.min(width, height) * .0185 : Math.min(width, height) * .0205;
-      const count = compact ? 680 : 1040;
-      particles = Array.from({ length: count }, (_, i) => {
-        const a = Math.random() * Math.PI * 2;
-        const edge = heartPoint(a);
-        const fill = Math.sqrt(Math.random());
-        const depth = (Math.random() - .5) * 2;
-        const swell = 1 + depth * .11;
-        return {
-          bx: cx + edge.x * scale * fill * swell,
-          by: cy + edge.y * scale * fill * swell,
-          depth,
-          size: .7 + Math.random() * 2.5,
-          phase: Math.random() * Math.PI * 2,
-          drift: .6 + Math.random() * 1.4,
-          alpha: .3 + Math.random() * .7
-        };
-      });
-    }
-
-    function drawHeart() {
-      ctx.clearRect(0, 0, width, height);
-      const compact = width < 900;
-      const cx = compact ? width * .5 : width * .235;
-      const pulse = playing ? 1 + Math.sin(t * 2.9) * .014 : 1 + Math.sin(t * 1.15) * .007;
-      const rot = reducedMotion ? 0 : Math.sin(t * .32) * .12;
-      const c = Math.cos(rot);
-      const s = Math.sin(rot);
-
-      for (const p of particles) {
-        let dx = (p.bx - cx) * pulse;
-        let dy = (p.by - (compact ? height * .245 : height * .51)) * pulse;
-        const perspective = 1 + p.depth * .10;
-        const rx = (dx * c - p.depth * 15 * s) * perspective;
-        const rz = dx * s + p.depth * 15 * c;
-        const floatY = reducedMotion ? 0 : Math.sin(t * p.drift + p.phase) * 1.7;
-        const x = cx + rx;
-        const y = (compact ? height * .245 : height * .51) + dy + floatY;
-        const brightness = Math.max(.08, .62 + rz / 44);
-        const r = Math.round(54 + brightness * 112);
-        const g = Math.round(138 + brightness * 84);
-        const b = 255;
-        const size = p.size * (1 + brightness * .28);
-
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${r},${g},${b},${p.alpha * .78})`;
-        ctx.shadowBlur = 9 + brightness * 10;
-        ctx.shadowColor = `rgba(47,174,255,${.24 + brightness * .26})`;
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
+    function burst(strength=1){
+      const cx=W/2,cy=H/2;
+      const count=Math.round((W<700?80:150)*strength);
+      for(let i=0;i<count;i++){
+        const a=Math.random()*Math.PI*2;
+        const speed=(2+Math.random()*9)*strength;
+        particles.push({x:cx+(Math.random()-.5)*40,y:cy+(Math.random()-.5)*28,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,size:.6+Math.random()*2.6,life:1,decay:.012+Math.random()*.018,hue:195+Math.random()*55});
       }
-
-      ctx.shadowBlur = 0;
-      t += reducedMotion ? 0 : .016;
-      requestAnimationFrame(drawHeart);
+      flash.classList.remove('fire');shock.classList.remove('fire');void flash.offsetWidth;flash.classList.add('fire');shock.classList.add('fire');
     }
 
-    function updateLyrics(current) {
-      let activeIndex = -1;
-      lyricNodes.forEach((node, i) => {
-        if (current >= Number(node.dataset.time)) activeIndex = i;
+    function drawFx(){
+      ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+      particles=particles.filter(p=>p.life>0);
+      for(const p of particles){
+        p.x+=p.vx;p.y+=p.vy;p.vx*=.987;p.vy*=.987;p.life-=p.decay;
+        ctx.beginPath();ctx.fillStyle=`hsla(${p.hue},100%,70%,${Math.max(0,p.life)})`;ctx.shadowBlur=18*p.life;ctx.shadowColor=`hsla(${p.hue},100%,60%,${p.life})`;ctx.arc(p.x,p.y,p.size*(.7+p.life),0,Math.PI*2);ctx.fill();
+      }
+      ctx.shadowBlur=0;requestAnimationFrame(drawFx);
+    }
+    drawFx();
+
+    function showLine(index){
+      if(index===lastIndex)return;
+      lastIndex=index;
+      lyrics.forEach((el,i)=>{
+        el.classList.remove('enter','exit');
+        if(i===index){void el.offsetWidth;el.classList.add('enter');burst(i===0?1.2:1);}
       });
-      lyricNodes.forEach((node, i) => {
-        node.classList.toggle('active', i === activeIndex);
-        node.classList.toggle('past', i < activeIndex);
-      });
     }
 
-    function resetLyrics() {
-      lyricNodes.forEach(node => node.classList.remove('active', 'past'));
+    function hideLine(index){
+      const el=lyrics[index];if(!el)return;
+      el.classList.remove('enter');void el.offsetWidth;el.classList.add('exit');
     }
 
-    function beginMonitor() {
-      cancelAnimationFrame(monitorId);
-      const monitor = () => {
-        if (!player || !playing) return;
-        const current = player.getCurrentTime ? player.getCurrentTime() : START;
-        updateLyrics(current);
-        if (current >= END) {
-          player.pauseVideo();
-          player.seekTo(START, true);
-          playing = false;
-          document.body.classList.remove('playing');
-          resetLyrics();
-          return;
-        }
-        monitorId = requestAnimationFrame(monitor);
+    function resetVisuals(){
+      lastIndex=-1;lyrics.forEach(el=>el.classList.remove('enter','exit'));intro.classList.remove('hidden');
+    }
+
+    function sync(t){
+      let idx=-1;
+      lyrics.forEach((el,i)=>{const s=+el.dataset.time,e=+el.dataset.end;if(t>=s&&t<e)idx=i;});
+      if(idx!==lastIndex){
+        if(lastIndex>=0)hideLine(lastIndex);
+        if(idx>=0)showLine(idx);else lastIndex=-1;
+      }
+    }
+
+    function monitor(){
+      cancelAnimationFrame(raf);
+      const loop=()=>{
+        if(!player||!playing)return;
+        const t=player.getCurrentTime?player.getCurrentTime():START;
+        sync(t);
+        if(t>=END){player.pauseVideo();player.seekTo(START,true);playing=false;document.body.classList.remove('playing');setTimeout(resetVisuals,650);return;}
+        raf=requestAnimationFrame(loop);
       };
-      monitorId = requestAnimationFrame(monitor);
+      raf=requestAnimationFrame(loop);
     }
 
-    function playSegment() {
-      if (!ready || !player) {
-        queuedPlay = true;
-        return;
-      }
-      player.seekTo(START, true);
-      player.unMute();
-      player.setVolume(100);
-      player.playVideo();
-      playing = true;
-      document.body.classList.add('playing');
-      updateLyrics(START);
-      beginMonitor();
+    function play(){
+      intro.classList.add('hidden');burst(1.65);
+      if(!ready||!player){queued=true;return;}
+      lyrics.forEach(el=>el.classList.remove('enter','exit'));lastIndex=-1;
+      player.seekTo(START,true);player.unMute();player.setVolume(100);player.playVideo();playing=true;document.body.classList.add('playing');showLine(0);monitor();
     }
 
-    function pauseSegment() {
-      if (!player || !ready) return;
-      player.pauseVideo();
-      playing = false;
-      document.body.classList.remove('playing');
-      cancelAnimationFrame(monitorId);
-    }
+    function pause(){if(!player||!ready)return;player.pauseVideo();playing=false;document.body.classList.remove('playing');cancelAnimationFrame(raf)}
+    function toggle(){playing?pause():play()}
 
-    function toggleSegment() {
-      playing ? pauseSegment() : playSegment();
-    }
-
-    window.onYouTubeIframeAPIReady = () => {
-      player = new YT.Player('youtubeAudio', {
-        width: '1',
-        height: '1',
-        videoId: VIDEO_ID,
-        playerVars: {
-          autoplay: 0,
-          controls: 0,
-          disablekb: 1,
-          fs: 0,
-          playsinline: 1,
-          rel: 0,
-          start: 109,
-          end: 121,
-          origin: location.origin === 'null' ? undefined : location.origin
-        },
-        events: {
-          onReady: () => {
-            ready = true;
-            player.setVolume(100);
-            if (queuedPlay) {
-              queuedPlay = false;
-              playSegment();
-            }
-          },
-          onStateChange: event => {
-            if (event.data === YT.PlayerState.PLAYING) {
-              playing = true;
-              document.body.classList.add('playing');
-              beginMonitor();
-            }
-            if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-              playing = false;
-              document.body.classList.remove('playing');
-            }
-          }
-        }
-      });
+    window.onYouTubeIframeAPIReady=()=>{
+      player=new YT.Player('youtubeAudio',{width:'1',height:'1',videoId:VIDEO_ID,playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,start:109,end:121},events:{onReady:()=>{ready=true;player.setVolume(100);if(queued){queued=false;play()}},onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING){playing=true;document.body.classList.add('playing');monitor()} if(e.data===YT.PlayerState.PAUSED||e.data===YT.PlayerState.ENDED){playing=false;document.body.classList.remove('playing')}}}})
     };
 
-    document.addEventListener('pointerdown', toggleSegment, { passive: true });
-    document.addEventListener('keydown', event => {
-      if (event.code === 'Space' || event.code === 'Enter') {
-        event.preventDefault();
-        toggleSegment();
-      }
-    });
+    document.addEventListener('pointerdown',toggle,{passive:true});
+    document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();toggle()}});
 
-    lyricNodes.forEach(node => {
-      node.dataset.text = node.textContent.trim();
-    });
-
-    const yt = document.createElement('script');
-    yt.src = 'https://www.youtube.com/iframe_api';
-    yt.async = true;
-    document.head.appendChild(yt);
-
-    addEventListener('resize', resize, { passive: true });
-    resize();
-    drawHeart();
+    const yt=document.createElement('script');yt.src='https://www.youtube.com/iframe_api';yt.async=true;document.head.appendChild(yt);
   </script>
 </body>
 </html>
