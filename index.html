@@ -1,262 +1,322 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#020611" />
-  <meta name="color-scheme" content="dark" />
-  <title>TO MY LOVE</title>
-  <style>
-    :root{
-      --bg:#020611;
-      --ice:#eafdff;
-      --cyan:#8de8ff;
-      --blue:#29a8ff;
-      --deep:#245cff;
-      --violet:#806bff;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<title>TO MY LOVE</title>
+<style>
+:root{
+  --bg:#000;
+  --white:#f7fbff;
+  --blue:#46b8ff;
+  --blue2:#176bff;
+  --blue3:#8bd8ff;
+  --muted:#8b96a6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#000;color:var(--white);overflow:hidden}
+body{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+button,input{font:inherit}
+button{-webkit-tap-highlight-color:transparent}
 
-    *{box-sizing:border-box}
-    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#020611}
-    body{
-      font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      color:white;
-      -webkit-font-smoothing:antialiased;
-      user-select:none;
-      cursor:pointer;
-    }
+.app{position:relative;width:100%;height:100svh;background:#000;display:grid;place-items:center;isolation:isolate}
+.app::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(34,146,255,.10),transparent 31%);opacity:.55;z-index:-2}
+.blue-edge{position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 90px rgba(22,107,255,.07);z-index:30}
 
-    .scene{
-      position:fixed;inset:0;isolation:isolate;overflow:hidden;
-      background:
-        radial-gradient(circle at 50% 44%,rgba(34,123,255,.22),transparent 24%),
-        radial-gradient(circle at 50% 50%,rgba(32,183,255,.10),transparent 42%),
-        radial-gradient(circle at 18% 24%,rgba(90,104,255,.12),transparent 28%),
-        linear-gradient(145deg,#01030a 0%,#031126 44%,#020611 100%);
-    }
+.screen{position:absolute;inset:0;display:grid;place-items:center;padding:28px;opacity:0;visibility:hidden;transform:scale(.985);transition:opacity .38s ease,transform .38s ease,visibility .38s}
+.screen.active{opacity:1;visibility:visible;transform:scale(1)}
 
-    .scene::before{
-      content:"";position:absolute;inset:-35%;z-index:-5;
-      background:conic-gradient(from 0deg at 50% 50%,transparent 0 17%,rgba(54,145,255,.055) 23%,transparent 31% 52%,rgba(100,83,255,.045) 59%,transparent 66%);
-      filter:blur(38px);animation:nebula 18s linear infinite;
-    }
+.card{width:min(620px,100%);text-align:center}
+.brand{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:#687385;margin-bottom:40px}
+.question{margin:0 0 28px;font-size:clamp(38px,7vw,72px);line-height:.98;letter-spacing:-.045em;font-weight:800;color:#fff}
+.question .blue{color:var(--blue);text-shadow:0 0 24px rgba(70,184,255,.22)}
+.sub{color:#657082;font-size:14px;margin:-12px 0 25px}
 
-    .vignette{position:absolute;inset:0;z-index:20;pointer-events:none;box-shadow:inset 0 0 170px 65px rgba(0,0,0,.78)}
-    .grain{position:absolute;inset:-100%;z-index:19;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");animation:grain .28s steps(2) infinite}
+.name-row{display:flex;gap:10px;max-width:470px;margin:0 auto}
+.name-input{flex:1;min-width:0;height:56px;border:1px solid #1d2631;border-radius:16px;background:#080a0d;color:white;outline:none;padding:0 18px;font-size:17px;box-shadow:0 0 0 0 rgba(70,184,255,0);transition:border-color .22s,box-shadow .22s,background .22s}
+.name-input:focus{border-color:#318cd0;background:#090d12;box-shadow:0 0 0 4px rgba(70,184,255,.08),0 0 34px rgba(70,184,255,.06)}
+.name-input::placeholder{color:#414b58}
+.go{height:56px;padding:0 20px;border:0;border-radius:16px;background:#fff;color:#000;font-weight:800;cursor:pointer;transition:transform .16s,background .16s,box-shadow .16s}
+.go:hover{background:#dff4ff;box-shadow:0 0 30px rgba(70,184,255,.16)}
+.go:active{transform:scale(.96)}
 
-    .stars,.stars2{position:absolute;inset:-20%;z-index:-4;pointer-events:none;background-repeat:repeat;transform:translateZ(0)}
-    .stars{opacity:.72;background-image:radial-gradient(circle,rgba(255,255,255,.88) 0 1px,transparent 1.35px);background-size:118px 118px;animation:starsA 34s linear infinite}
-    .stars2{opacity:.5;background-image:radial-gradient(circle,rgba(86,191,255,.92) 0 1px,transparent 1.4px),radial-gradient(circle,rgba(136,111,255,.7) 0 .8px,transparent 1.25px);background-size:191px 191px,269px 269px;background-position:32px 18px,101px 72px;animation:starsB 48s linear infinite}
+.creature{width:92px;height:78px;margin:0 auto 28px;position:relative;filter:drop-shadow(0 0 18px rgba(70,184,255,.13));transition:transform .25s ease,filter .25s ease}
+.creature .head{position:absolute;inset:0 7px 4px;border-radius:45% 45% 42% 42% / 46% 46% 54% 54%;border:1px solid #21455e;background:linear-gradient(180deg,#0b1b26,#06090d)}
+.creature .head:before,.creature .head:after{content:"";position:absolute;top:30px;width:9px;height:13px;border-radius:50%;background:#dff7ff;box-shadow:0 0 14px rgba(70,184,255,.65)}
+.creature .head:before{left:22px}.creature .head:after{right:22px}
+.creature .mouth{position:absolute;width:18px;height:7px;border-bottom:2px solid #4dbbff;border-radius:50%;left:50%;top:49px;transform:translateX(-50%)}
+.creature .ear{position:absolute;top:2px;width:27px;height:34px;border:1px solid #21455e;background:#08131b;z-index:-1}
+.creature .ear.left{left:8px;transform:rotate(-27deg);border-radius:8px 20px 8px 20px}.creature .ear.right{right:8px;transform:rotate(27deg);border-radius:20px 8px 20px 8px}
+.creature.angry{animation:angryShake .34s linear 2;filter:drop-shadow(0 0 28px rgba(0,135,255,.35))}
+.creature.angry .head:before{transform:rotate(22deg);border-radius:10px 2px 10px 2px;height:5px;top:31px}
+.creature.angry .head:after{transform:rotate(-22deg);border-radius:2px 10px 2px 10px;height:5px;top:31px}
+.creature.angry .mouth{width:24px;height:10px;border-top:2px solid #4dbbff;border-bottom:0;border-radius:50%;top:52px}
+.creature.bro .head:before,.creature.bro .head:after{height:4px;border-radius:3px;top:34px}
+.creature.bro{transform:rotate(-5deg)}
 
-    #fx{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;mix-blend-mode:screen}
+.choice-wrap{display:flex;justify-content:center;gap:12px;margin-top:24px;flex-wrap:wrap}
+.choice{min-width:150px;height:54px;border:1px solid #202935;border-radius:15px;background:#090b0f;color:#fff;font-weight:750;cursor:pointer;transition:.18s ease}
+.choice:hover{border-color:#397da9;background:#0b1118;box-shadow:0 0 28px rgba(70,184,255,.08)}
+.choice:active{transform:scale(.96)}
 
-    .ambient-ring{position:absolute;left:50%;top:50%;width:min(74vw,880px);aspect-ratio:1;translate:-50% -50%;border-radius:50%;z-index:-2;pointer-events:none;border:1px solid rgba(124,212,255,.04);box-shadow:0 0 120px rgba(35,133,255,.08),inset 0 0 100px rgba(54,142,255,.03);animation:ringBreath 6s ease-in-out infinite}
+.verdict{margin:0;max-width:900px;font-size:clamp(38px,8vw,94px);line-height:.93;letter-spacing:-.055em;font-weight:950;text-align:center;text-transform:uppercase;color:#fff}
+.verdict.blue{color:#fff;text-shadow:0 0 12px rgba(139,216,255,.4),0 0 40px rgba(70,184,255,.32),0 0 90px rgba(23,107,255,.22)}
+.back{margin-top:30px;border:0;background:transparent;color:#505b68;cursor:pointer;font-weight:700}
 
-    .intro{
-      position:absolute;inset:0;z-index:8;display:grid;place-items:center;text-align:center;
-      transition:opacity .8s ease,visibility .8s ease,filter .8s ease;
-    }
-    .intro.hidden{opacity:0;visibility:hidden;filter:blur(12px)}
-    .intro-inner{position:relative;transform-style:preserve-3d;perspective:1000px;padding:24px}
-    .intro-title{
-      margin:0;font-size:clamp(54px,10vw,158px);line-height:.82;letter-spacing:-.075em;font-weight:900;
-      color:transparent;background:linear-gradient(180deg,#fff 0%,#e7fbff 17%,#a2eaff 38%,#47bfff 64%,#526dff 100%);-webkit-background-clip:text;background-clip:text;
-      text-shadow:0 0 18px rgba(166,232,255,.35),0 0 42px rgba(54,169,255,.28),0 0 92px rgba(47,84,255,.22);
-      filter:drop-shadow(10px 14px 0 rgba(6,24,70,.58));
-      animation:introFloat 3.6s ease-in-out infinite;
-    }
-    .intro-title::after{content:"TO MY LOVE";position:absolute;inset:24px;color:transparent;-webkit-text-stroke:1px rgba(220,249,255,.22);transform:translate3d(10px,13px,-20px);filter:blur(.2px);z-index:-1}
-    .tap{margin-top:24px;font-size:clamp(11px,1vw,14px);letter-spacing:.36em;text-transform:uppercase;color:rgba(211,241,255,.54);animation:tapPulse 1.8s ease-in-out infinite}
+/* edit */
+#edit{background:#000;overflow:hidden}
+.edit-stage{position:absolute;inset:0;display:grid;place-items:center;padding:6vw;text-align:center}
+.edit-stage::before{content:"";position:absolute;width:min(62vw,760px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(25,115,255,.15),rgba(25,115,255,.045) 40%,transparent 70%);filter:blur(12px);opacity:.75;animation:slowBreath 5s ease-in-out infinite;pointer-events:none}
+.edit-kicker{position:absolute;top:max(28px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.48em;text-transform:uppercase;color:#4f5968;white-space:nowrap}
+.word{position:relative;z-index:3;max-width:94vw;margin:0;font-size:clamp(58px,13vw,180px);line-height:.83;letter-spacing:-.065em;font-weight:950;text-transform:uppercase;color:#fff;opacity:0;transform:translateY(30px) scale(.88);filter:blur(14px);text-shadow:0 0 0 transparent;will-change:transform,opacity,filter}
+.word.show{animation:wordHit .66s cubic-bezier(.16,.85,.2,1) forwards}
+.word.blue-word{color:#effaff;text-shadow:0 0 12px rgba(139,216,255,.55),0 0 34px rgba(70,184,255,.38),0 0 72px rgba(23,107,255,.22)}
+.word.hide{animation:wordOut .24s ease forwards}
 
-    .lyric-stage{position:absolute;inset:0;z-index:7;display:grid;place-items:center;padding:clamp(22px,5vw,84px);perspective:1500px;pointer-events:none}
-    .lyric{
-      position:absolute;width:min(92vw,1280px);margin:0;text-align:center;
-      font-size:clamp(44px,8.6vw,142px);line-height:.88;letter-spacing:-.065em;font-weight:900;text-transform:uppercase;
-      opacity:0;visibility:hidden;transform-style:preserve-3d;
-      color:transparent;background:linear-gradient(180deg,#fff 0%,#e8fbff 13%,#b8efff 30%,#6fd7ff 48%,#2caeff 68%,#556cff 87%,#856fff 100%);-webkit-background-clip:text;background-clip:text;
-      text-shadow:0 0 18px rgba(207,247,255,.26),0 0 36px rgba(89,202,255,.28),0 0 76px rgba(41,121,255,.34),0 0 130px rgba(100,74,255,.18);
-      filter:drop-shadow(9px 12px 0 rgba(4,22,65,.86)) drop-shadow(16px 23px 18px rgba(0,0,0,.35));
-      will-change:transform,opacity,filter;
-    }
-    .lyric::before,
-    .lyric::after{content:attr(data-text);position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
-    .lyric::before{z-index:-2;color:#071637;transform:translate3d(13px,16px,-20px);text-shadow:1px 1px 0 #0a1b43,2px 2px 0 #0a1b43,3px 3px 0 #0a1b43,4px 4px 0 #0b1f50,5px 5px 0 #0c245c,6px 6px 0 #0d2968,10px 12px 22px rgba(1,7,25,.8)}
-    .lyric::after{z-index:2;color:transparent;background:linear-gradient(100deg,transparent 0 35%,rgba(255,255,255,.98) 47%,rgba(189,242,255,.96) 53%,transparent 66%);background-size:260% 100%;background-position:120% 0;-webkit-background-clip:text;background-clip:text;opacity:0;filter:blur(.1px)}
+.flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at center,rgba(166,229,255,.28),rgba(38,137,255,.12) 24%,transparent 58%)}
+.flash.hit{animation:flash .38s ease-out}
+.line-streak{position:absolute;left:50%;top:50%;width:0;height:1px;background:linear-gradient(90deg,transparent,#7bd4ff,transparent);box-shadow:0 0 18px rgba(70,184,255,.75);transform:translate(-50%,-50%) rotate(-8deg);opacity:0;pointer-events:none}
+.line-streak.hit{animation:streak .52s ease-out}
+.end-love{position:absolute;bottom:max(30px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.34em;color:#2f3947;text-transform:uppercase;opacity:0;transition:opacity 1s ease;white-space:nowrap}
+.end-love.visible{opacity:1;color:#6b8196;text-shadow:0 0 15px rgba(70,184,255,.15)}
 
-    .lyric.enter{visibility:visible;animation:lyricEnter .95s cubic-bezier(.13,.88,.24,1.12) forwards,lyricHover 2.2s .95s ease-in-out infinite alternate}
-    .lyric.enter::after{animation:shine 1.15s .18s cubic-bezier(.2,.7,.3,1) forwards}
-    .lyric.exit{visibility:visible;animation:lyricExit .68s cubic-bezier(.55,.04,.9,.43) forwards}
+#yt{position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;opacity:0;pointer-events:none}
 
-    .flash{position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(210,249,255,.56) 0%,rgba(65,173,255,.24) 14%,rgba(34,91,255,.07) 30%,transparent 56%);opacity:0;mix-blend-mode:screen}
-    .flash.fire{animation:flash .72s ease-out}
-    .shock{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;translate:-50% -50%;z-index:5;border:2px solid rgba(168,231,255,.85);opacity:0;pointer-events:none;box-shadow:0 0 24px rgba(70,183,255,.8),0 0 70px rgba(67,111,255,.35)}
-    .shock.fire{animation:shock 1.15s cubic-bezier(.1,.62,.18,1)}
+@keyframes wordHit{
+  0%{opacity:0;transform:translateY(32px) scale(.84);filter:blur(16px);letter-spacing:-.02em}
+  46%{opacity:1;transform:translateY(-3px) scale(1.035);filter:blur(0);letter-spacing:-.065em}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);letter-spacing:-.065em}
+}
+@keyframes wordOut{to{opacity:0;transform:translateY(-18px) scale(1.06);filter:blur(9px)}}
+@keyframes flash{0%{opacity:.95}100%{opacity:0}}
+@keyframes streak{0%{opacity:0;width:0}34%{opacity:.9;width:min(72vw,850px)}100%{opacity:0;width:min(90vw,1100px)}}
+@keyframes slowBreath{50%{transform:scale(1.07);opacity:1}}
+@keyframes angryShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px) rotate(-3deg)}75%{transform:translateX(8px) rotate(3deg)}}
 
-    .start-btn{position:fixed;left:50%;bottom:max(26px,env(safe-area-inset-bottom));translate:-50% 0;z-index:30;width:58px;height:58px;border-radius:50%;border:1px solid rgba(157,225,255,.26);background:rgba(4,17,43,.48);backdrop-filter:blur(14px);box-shadow:0 0 30px rgba(40,151,255,.15),inset 0 0 20px rgba(91,188,255,.08);display:grid;place-items:center;transition:.35s ease}
-    .start-btn::before{content:"";width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:13px solid #e7fbff;margin-left:4px;filter:drop-shadow(0 0 8px rgba(101,211,255,.65))}
-    body.playing .start-btn{opacity:.16;transform:scale(.82)}
-
-    #youtubeAudio{position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:.001;pointer-events:none}
-
-    @keyframes nebula{to{transform:rotate(360deg)}}
-    @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(3%,-2%)}50%{transform:translate(-2%,3%)}75%{transform:translate(1%,4%)}100%{transform:translate(-3%,-1%)}}
-    @keyframes starsA{to{transform:translate3d(-90px,-70px,0)}}
-    @keyframes starsB{to{transform:translate3d(85px,-110px,0)}}
-    @keyframes ringBreath{0%,100%{scale:.88;opacity:.35}50%{scale:1.08;opacity:.78}}
-    @keyframes introFloat{0%,100%{transform:rotateX(0deg) rotateY(0deg) scale(1)}50%{transform:rotateX(4deg) rotateY(-3deg) scale(1.02)}}
-    @keyframes tapPulse{0%,100%{opacity:.34}50%{opacity:.82}}
-    @keyframes lyricEnter{
-      0%{opacity:0;filter:blur(22px) brightness(2.1);transform:translate3d(0,120px,-420px) rotateX(38deg) rotateZ(-3deg) scale(.52)}
-      48%{opacity:1;filter:blur(0) brightness(1.42);transform:translate3d(0,-10px,40px) rotateX(-4deg) rotateZ(.4deg) scale(1.065)}
-      100%{opacity:1;filter:blur(0) brightness(1.08);transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg) scale(1)}
-    }
-    @keyframes lyricHover{
-      from{transform:translate3d(0,0,0) rotateX(0deg) rotateY(-1.2deg) scale(1);text-shadow:0 0 18px rgba(207,247,255,.24),0 0 38px rgba(89,202,255,.25),0 0 75px rgba(41,121,255,.29),0 0 125px rgba(100,74,255,.16)}
-      to{transform:translate3d(0,-7px,24px) rotateX(1.5deg) rotateY(1.2deg) scale(1.018);text-shadow:0 0 22px rgba(225,251,255,.4),0 0 48px rgba(89,202,255,.34),0 0 96px rgba(41,121,255,.38),0 0 150px rgba(100,74,255,.22)}
-    }
-    @keyframes lyricExit{
-      0%{opacity:1;filter:blur(0) brightness(1.1);transform:translate3d(0,0,0) rotateX(0) scale(1)}
-      45%{opacity:1;filter:blur(1px) brightness(1.75);transform:translate3d(0,-8px,85px) rotateX(-5deg) scale(1.08)}
-      100%{opacity:0;filter:blur(24px) brightness(2.2);transform:translate3d(0,-150px,280px) rotateX(-32deg) rotateZ(2deg) scale(1.32)}
-    }
-    @keyframes shine{0%{opacity:0;background-position:120% 0}18%{opacity:1}75%{opacity:.82}100%{opacity:0;background-position:-120% 0}}
-    @keyframes flash{0%{opacity:0}8%{opacity:1}30%{opacity:.42}100%{opacity:0}}
-    @keyframes shock{0%{opacity:.95;width:12px;height:12px}100%{opacity:0;width:min(96vw,1250px);height:min(96vw,1250px);border-width:1px}}
-
-    @media(max-width:700px){
-      .lyric{font-size:clamp(40px,13.4vw,80px);line-height:.9;width:92vw}
-      .intro-title{font-size:clamp(58px,19vw,100px);line-height:.8}
-      .lyric::before{transform:translate3d(8px,11px,-18px)}
-      .vignette{box-shadow:inset 0 0 110px 30px rgba(0,0,0,.78)}
-    }
-
-    @media(prefers-reduced-motion:reduce){
-      .grain,.stars,.stars2,.scene::before,.ambient-ring,.intro-title,.tap{animation:none}
-      .lyric.enter{animation:fadeIn .5s ease forwards}.lyric.exit{animation:fadeOut .45s ease forwards}
-      @keyframes fadeIn{to{opacity:1;visibility:visible}}@keyframes fadeOut{to{opacity:0}}
-    }
-  </style>
+@media(max-width:640px){
+ .name-row{flex-direction:column}.go{width:100%}.question{font-size:clamp(42px,13vw,66px)}
+ .word{font-size:clamp(54px,18vw,112px);line-height:.86}
+ .choice{min-width:135px;flex:1}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
-  <main class="scene" aria-label="TO MY LOVE">
-    <div class="stars"></div><div class="stars2"></div><div class="ambient-ring"></div>
-    <canvas id="fx"></canvas>
-    <div class="flash" id="flash"></div><div class="shock" id="shock"></div>
+<main class="app">
+  <div class="blue-edge"></div>
 
-    <section class="intro" id="intro">
-      <div class="intro-inner">
-        <h1 class="intro-title">TO MY LOVE</h1>
-        <div class="tap">TAP TO OPEN</div>
+  <section class="screen active" id="gate" aria-label="Identity gate">
+    <div class="card">
+      <div class="creature" aria-hidden="true">
+        <i class="ear left"></i><i class="ear right"></i><div class="head"><i class="mouth"></i></div>
       </div>
-    </section>
+      <div class="brand">TO MY LOVE</div>
+      <h1 class="question">Who are <span class="blue">you?</span></h1>
+      <div class="name-row">
+        <input id="nameInput" class="name-input" type="text" inputmode="text" autocomplete="off" autocapitalize="words" placeholder="Type your name" aria-label="Type your name" />
+        <button id="continueBtn" class="go" type="button">Continue</button>
+      </div>
+    </div>
+  </section>
 
-    <section class="lyric-stage" aria-label="Lyrics">
-      <p class="lyric" data-index="0" data-time="108.92" data-end="112.54">WE WERE TOO CLOSE TO THE STARS</p>
-      <p class="lyric" data-index="1" data-time="112.58" data-end="117.56">I NEVER KNEW SOMEBODY LIKE YOU, SOMEBODY</p>
-      <p class="lyric" data-index="2" data-time="117.63" data-end="120.72">FALLIN' JUST AS HARD</p>
-    </section>
+  <section class="screen" id="gender" aria-label="Choose gender">
+    <div class="card">
+      <div class="creature" aria-hidden="true">
+        <i class="ear left"></i><i class="ear right"></i><div class="head"><i class="mouth"></i></div>
+      </div>
+      <div class="brand">WRONG PERSON</div>
+      <h2 class="question">Are you <span class="blue">Male</span> / Female?</h2>
+      <div class="choice-wrap">
+        <button class="choice" data-gender="male">Male</button>
+        <button class="choice" data-gender="female">Female</button>
+      </div>
+      <button class="back" data-back>← try another name</button>
+    </div>
+  </section>
 
-    <div class="start-btn" aria-hidden="true"></div>
-    <div class="vignette"></div><div class="grain"></div>
-    <div id="youtubeAudio" aria-hidden="true"></div>
-  </main>
+  <section class="screen" id="reject" aria-label="Not for you">
+    <div class="card">
+      <div class="creature angry" id="rejectCreature" aria-hidden="true">
+        <i class="ear left"></i><i class="ear right"></i><div class="head"><i class="mouth"></i></div>
+      </div>
+      <p class="verdict blue" id="rejectText"></p>
+      <button class="back" data-back>← leave</button>
+    </div>
+  </section>
 
-  <script>
-    const START=108.92, END=120.82, VIDEO_ID='x47TgeRJtH0';
-    const lyrics=[...document.querySelectorAll('.lyric')];
-    lyrics.forEach(el=>el.dataset.text=el.textContent.trim());
-    const intro=document.getElementById('intro');
-    const flash=document.getElementById('flash');
-    const shock=document.getElementById('shock');
-    const canvas=document.getElementById('fx');
-    const ctx=canvas.getContext('2d');
-    const DPR=Math.min(devicePixelRatio||1,2);
-    let W=innerWidth,H=innerHeight,particles=[],player,ready=false,playing=false,queued=false,raf=0,lastIndex=-1;
+  <section class="screen" id="edit" aria-label="For Anny">
+    <div class="edit-stage">
+      <div class="edit-kicker">TO MY LOVE</div>
+      <div class="flash" id="flash"></div>
+      <div class="line-streak" id="streak"></div>
+      <p class="word" id="word"></p>
+      <div class="end-love" id="endLove">ONLY YOU, ANNY</div>
+    </div>
+    <div id="yt"></div>
+  </section>
+</main>
 
-    function resize(){
-      W=innerWidth;H=innerHeight;canvas.width=W*DPR;canvas.height=H*DPR;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);
+<script>
+(() => {
+  const START = 108.92;
+  const END = 120.88;
+  const VIDEO_ID = 'x47TgeRJtH0';
+
+  const screens = [...document.querySelectorAll('.screen')];
+  const gate = document.getElementById('gate');
+  const gender = document.getElementById('gender');
+  const reject = document.getElementById('reject');
+  const edit = document.getElementById('edit');
+  const input = document.getElementById('nameInput');
+  const button = document.getElementById('continueBtn');
+  const wordEl = document.getElementById('word');
+  const flash = document.getElementById('flash');
+  const streak = document.getElementById('streak');
+  const endLove = document.getElementById('endLove');
+  const rejectText = document.getElementById('rejectText');
+  const rejectCreature = document.getElementById('rejectCreature');
+
+  let player = null;
+  let ytReady = false;
+  let editStarted = false;
+  let startPerf = 0;
+  let raf = 0;
+  let currentWord = -1;
+
+  const words = [
+    ['WE', 108.92], ['WERE', 109.36], ['TOO', 109.84], ['CLOSE', 110.28], ['TO', 110.86], ['THE', 111.27], ['STARS', 111.68],
+    ['I', 112.58], ['NEVER', 113.02], ['KNEW', 113.63], ['SOMEBODY', 114.12], ['LIKE', 115.09], ['YOU,', 115.61], ['SOMEBODY', 116.22],
+    ["FALLIN'", 117.63], ['JUST', 118.49], ['AS', 119.18], ['HARD', 119.71]
+  ];
+
+  function showScreen(target){
+    screens.forEach(s => s.classList.toggle('active', s === target));
+  }
+
+  function normalizedName(v){
+    return v.trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  }
+
+  function submitName(){
+    const name = normalizedName(input.value);
+    if(!name){
+      input.focus();
+      input.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:260});
+      return;
     }
-    addEventListener('resize',resize,{passive:true});resize();
+    if(name === 'anny'){
+      showScreen(edit);
+      startEdit();
+    } else {
+      showScreen(gender);
+    }
+  }
 
-    function burst(strength=1){
-      const cx=W/2,cy=H/2;
-      const count=Math.round((W<700?80:150)*strength);
-      for(let i=0;i<count;i++){
-        const a=Math.random()*Math.PI*2;
-        const speed=(2+Math.random()*9)*strength;
-        particles.push({x:cx+(Math.random()-.5)*40,y:cy+(Math.random()-.5)*28,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,size:.6+Math.random()*2.6,life:1,decay:.012+Math.random()*.018,hue:195+Math.random()*55});
+  button.addEventListener('click', submitName);
+  input.addEventListener('keydown', e => { if(e.key === 'Enter') submitName(); });
+
+  document.querySelectorAll('[data-gender]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const g = btn.dataset.gender;
+      rejectCreature.className = 'creature ' + (g === 'female' ? 'angry' : 'bro');
+      rejectText.textContent = g === 'female' ? 'GET THE FUCK OUT!' : "YO BRO, TS AIN'T FOR YOU!";
+      showScreen(reject);
+    });
+  });
+
+  document.querySelectorAll('[data-back]').forEach(btn => btn.addEventListener('click', () => {
+    showScreen(gate);
+    input.value = '';
+    setTimeout(() => input.focus(), 250);
+  }));
+
+  function hitFX(){
+    flash.classList.remove('hit');
+    streak.classList.remove('hit');
+    void flash.offsetWidth;
+    flash.classList.add('hit');
+    streak.classList.add('hit');
+  }
+
+  function showWord(i){
+    if(i === currentWord) return;
+    currentWord = i;
+    if(i < 0 || i >= words.length) return;
+    wordEl.classList.remove('show','hide','blue-word');
+    void wordEl.offsetWidth;
+    wordEl.textContent = words[i][0];
+    if(['STARS','YOU,','SOMEBODY','HARD'].includes(words[i][0])) wordEl.classList.add('blue-word');
+    wordEl.classList.add('show');
+    hitFX();
+  }
+
+  function relativeCurrent(){
+    if(player && ytReady && typeof player.getCurrentTime === 'function'){
+      const t = player.getCurrentTime();
+      if(t && t >= START - .5) return t;
+    }
+    return START + (performance.now() - startPerf) / 1000;
+  }
+
+  function loop(){
+    const t = relativeCurrent();
+    let idx = -1;
+    for(let i=0;i<words.length;i++) if(t >= words[i][1]) idx = i;
+    if(idx >= 0) showWord(idx);
+    if(t >= END){
+      if(player && ytReady) player.pauseVideo();
+      wordEl.classList.add('hide');
+      endLove.classList.add('visible');
+      return;
+    }
+    raf = requestAnimationFrame(loop);
+  }
+
+  function beginVisuals(){
+    startPerf = performance.now();
+    currentWord = -1;
+    endLove.classList.remove('visible');
+    cancelAnimationFrame(raf);
+    loop();
+  }
+
+  function startEdit(){
+    if(editStarted) return;
+    editStarted = true;
+    beginVisuals();
+    loadYouTube();
+  }
+
+  function loadYouTube(){
+    if(window.YT && window.YT.Player){ initPlayer(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.async = true;
+    document.head.appendChild(s);
+    window.onYouTubeIframeAPIReady = initPlayer;
+  }
+
+  function initPlayer(){
+    if(player) return;
+    player = new YT.Player('yt', {
+      width:'1', height:'1', videoId:VIDEO_ID,
+      playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,start:109,end:121},
+      events:{
+        onReady:() => {
+          ytReady = true;
+          player.seekTo(START,true);
+          player.unMute();
+          player.setVolume(100);
+          player.playVideo();
+          startPerf = performance.now();
+        }
       }
-      flash.classList.remove('fire');shock.classList.remove('fire');void flash.offsetWidth;flash.classList.add('fire');shock.classList.add('fire');
-    }
+    });
+  }
 
-    function drawFx(){
-      ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
-      particles=particles.filter(p=>p.life>0);
-      for(const p of particles){
-        p.x+=p.vx;p.y+=p.vy;p.vx*=.987;p.vy*=.987;p.life-=p.decay;
-        ctx.beginPath();ctx.fillStyle=`hsla(${p.hue},100%,70%,${Math.max(0,p.life)})`;ctx.shadowBlur=18*p.life;ctx.shadowColor=`hsla(${p.hue},100%,60%,${p.life})`;ctx.arc(p.x,p.y,p.size*(.7+p.life),0,Math.PI*2);ctx.fill();
-      }
-      ctx.shadowBlur=0;requestAnimationFrame(drawFx);
-    }
-    drawFx();
-
-    function showLine(index){
-      if(index===lastIndex)return;
-      lastIndex=index;
-      lyrics.forEach((el,i)=>{
-        el.classList.remove('enter','exit');
-        if(i===index){void el.offsetWidth;el.classList.add('enter');burst(i===0?1.2:1);}
-      });
-    }
-
-    function hideLine(index){
-      const el=lyrics[index];if(!el)return;
-      el.classList.remove('enter');void el.offsetWidth;el.classList.add('exit');
-    }
-
-    function resetVisuals(){
-      lastIndex=-1;lyrics.forEach(el=>el.classList.remove('enter','exit'));intro.classList.remove('hidden');
-    }
-
-    function sync(t){
-      let idx=-1;
-      lyrics.forEach((el,i)=>{const s=+el.dataset.time,e=+el.dataset.end;if(t>=s&&t<e)idx=i;});
-      if(idx!==lastIndex){
-        if(lastIndex>=0)hideLine(lastIndex);
-        if(idx>=0)showLine(idx);else lastIndex=-1;
-      }
-    }
-
-    function monitor(){
-      cancelAnimationFrame(raf);
-      const loop=()=>{
-        if(!player||!playing)return;
-        const t=player.getCurrentTime?player.getCurrentTime():START;
-        sync(t);
-        if(t>=END){player.pauseVideo();player.seekTo(START,true);playing=false;document.body.classList.remove('playing');setTimeout(resetVisuals,650);return;}
-        raf=requestAnimationFrame(loop);
-      };
-      raf=requestAnimationFrame(loop);
-    }
-
-    function play(){
-      intro.classList.add('hidden');burst(1.65);
-      if(!ready||!player){queued=true;return;}
-      lyrics.forEach(el=>el.classList.remove('enter','exit'));lastIndex=-1;
-      player.seekTo(START,true);player.unMute();player.setVolume(100);player.playVideo();playing=true;document.body.classList.add('playing');showLine(0);monitor();
-    }
-
-    function pause(){if(!player||!ready)return;player.pauseVideo();playing=false;document.body.classList.remove('playing');cancelAnimationFrame(raf)}
-    function toggle(){playing?pause():play()}
-
-    window.onYouTubeIframeAPIReady=()=>{
-      player=new YT.Player('youtubeAudio',{width:'1',height:'1',videoId:VIDEO_ID,playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,start:109,end:121},events:{onReady:()=>{ready=true;player.setVolume(100);if(queued){queued=false;play()}},onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING){playing=true;document.body.classList.add('playing');monitor()} if(e.data===YT.PlayerState.PAUSED||e.data===YT.PlayerState.ENDED){playing=false;document.body.classList.remove('playing')}}}})
-    };
-
-    document.addEventListener('pointerdown',toggle,{passive:true});
-    document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();toggle()}});
-
-    const yt=document.createElement('script');yt.src='https://www.youtube.com/iframe_api';yt.async=true;document.head.appendChild(yt);
-  </script>
+  setTimeout(() => input.focus(), 420);
+})();
+</script>
 </body>
 </html>
