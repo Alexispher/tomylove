@@ -66,13 +66,19 @@ button{-webkit-tap-highlight-color:transparent}
 
 /* edit */
 #edit{background:#000;overflow:hidden}
-.edit-stage{position:absolute;inset:0;display:grid;place-items:center;padding:6vw;text-align:center}
-.edit-stage::before{content:"";position:absolute;width:min(62vw,760px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(25,115,255,.15),rgba(25,115,255,.045) 40%,transparent 70%);filter:blur(12px);opacity:.75;animation:slowBreath 5s ease-in-out infinite;pointer-events:none}
+.edit-stage{position:absolute;inset:0;display:grid;place-items:center;padding:6vw;text-align:center;isolation:isolate}
+.edit-stage::before{content:"";position:absolute;inset:-8%;pointer-events:none;z-index:-3;background:
+  radial-gradient(ellipse at 50% 49%,rgba(62,164,255,.12) 0%,rgba(16,87,255,.055) 24%,transparent 58%),
+  radial-gradient(ellipse at 50% 58%,rgba(30,90,255,.05),transparent 52%);
+  opacity:.82;animation:cinemaBreath 5.5s ease-in-out infinite}
+.edit-stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:20;box-shadow:inset 0 0 150px rgba(0,0,0,.92),inset 0 0 55px rgba(0,0,0,.72)}
+.cinema-bloom{position:absolute;left:50%;top:50%;width:min(78vw,1100px);height:min(24vw,280px);transform:translate(-50%,-50%);pointer-events:none;z-index:0;opacity:.48;background:radial-gradient(ellipse,rgba(100,196,255,.16) 0%,rgba(32,116,255,.075) 32%,transparent 70%);filter:blur(26px);animation:bloomDrift 7s ease-in-out infinite}
+.cinema-flare{position:absolute;left:50%;top:50%;width:min(78vw,1050px);height:2px;transform:translate(-50%,-50%);pointer-events:none;z-index:1;opacity:.18;background:linear-gradient(90deg,transparent 0%,rgba(70,184,255,.08) 18%,rgba(183,232,255,.75) 50%,rgba(70,184,255,.08) 82%,transparent 100%);box-shadow:0 0 18px rgba(70,184,255,.32),0 0 46px rgba(23,107,255,.18)}
 .edit-kicker{position:absolute;top:max(28px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.48em;text-transform:uppercase;color:#4f5968;white-space:nowrap}
-.word{position:relative;z-index:3;max-width:94vw;margin:0;font-size:clamp(58px,13vw,180px);line-height:.83;letter-spacing:-.065em;font-weight:950;text-transform:uppercase;color:#fff;opacity:0;transform:translateY(30px) scale(.88);filter:blur(14px);text-shadow:0 0 0 transparent;will-change:transform,opacity,filter}
-.word.show{animation:wordHit .66s cubic-bezier(.16,.85,.2,1) forwards}
-.word.blue-word{color:#effaff;text-shadow:0 0 12px rgba(139,216,255,.55),0 0 34px rgba(70,184,255,.38),0 0 72px rgba(23,107,255,.22)}
-.word.hide{animation:wordOut .24s ease forwards}
+.word{position:relative;z-index:3;max-width:94vw;margin:0;font-size:clamp(58px,13vw,180px);line-height:.83;letter-spacing:-.065em;font-weight:950;text-transform:uppercase;color:#fff;opacity:0;transform:translateY(26px) scale(.90);text-shadow:0 0 8px rgba(255,255,255,.16),0 0 22px rgba(139,216,255,.08);will-change:transform,opacity}
+.word.show{animation:wordHit .58s cubic-bezier(.16,.85,.2,1) forwards;text-shadow:0 0 8px rgba(255,255,255,.34),0 0 22px rgba(183,232,255,.22),0 0 52px rgba(70,184,255,.18),0 0 100px rgba(23,107,255,.10)}
+.word.blue-word{color:#f7fcff;text-shadow:0 0 8px rgba(255,255,255,.44),0 0 20px rgba(183,232,255,.52),0 0 48px rgba(70,184,255,.42),0 0 105px rgba(23,107,255,.26)}
+.word.hide{animation:wordOut .28s ease forwards}
 
 .flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at center,rgba(166,229,255,.28),rgba(38,137,255,.12) 24%,transparent 58%)}
 .flash.hit{animation:flash .38s ease-out}
@@ -84,14 +90,15 @@ button{-webkit-tap-highlight-color:transparent}
 #yt{position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;opacity:0;pointer-events:none}
 
 @keyframes wordHit{
-  0%{opacity:0;transform:translateY(32px) scale(.84);filter:blur(16px);letter-spacing:-.02em}
-  46%{opacity:1;transform:translateY(-3px) scale(1.035);filter:blur(0);letter-spacing:-.065em}
-  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0);letter-spacing:-.065em}
+  0%{opacity:0;transform:translateY(28px) scale(.88);letter-spacing:-.02em}
+  48%{opacity:1;transform:translateY(-2px) scale(1.026);letter-spacing:-.065em}
+  100%{opacity:1;transform:translateY(0) scale(1);letter-spacing:-.065em}
 }
-@keyframes wordOut{to{opacity:0;transform:translateY(-18px) scale(1.06);filter:blur(9px)}}
+@keyframes wordOut{to{opacity:0;transform:translateY(-16px) scale(1.045)}}
 @keyframes flash{0%{opacity:.95}100%{opacity:0}}
 @keyframes streak{0%{opacity:0;width:0}34%{opacity:.9;width:min(72vw,850px)}100%{opacity:0;width:min(90vw,1100px)}}
-@keyframes slowBreath{50%{transform:scale(1.07);opacity:1}}
+@keyframes cinemaBreath{50%{opacity:1;transform:scale(1.025)}}
+@keyframes bloomDrift{0%,100%{transform:translate(-50%,-50%) scale(.96);opacity:.38}50%{transform:translate(-50%,-50%) scale(1.07);opacity:.62}}
 @keyframes angryShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px) rotate(-3deg)}75%{transform:translateX(8px) rotate(3deg)}}
 
 @media(max-width:640px){
@@ -148,6 +155,8 @@ button{-webkit-tap-highlight-color:transparent}
   <section class="screen" id="edit" aria-label="For Anny">
     <div class="edit-stage">
       <div class="edit-kicker">TO MY LOVE</div>
+      <div class="cinema-bloom" aria-hidden="true"></div>
+      <div class="cinema-flare" aria-hidden="true"></div>
       <div class="flash" id="flash"></div>
       <div class="line-streak" id="streak"></div>
       <p class="word" id="word"></p>
@@ -160,7 +169,7 @@ button{-webkit-tap-highlight-color:transparent}
 <script>
 (() => {
   const START = 108.92;
-  const END = 120.88;
+  const END = 121.55;
   const VIDEO_ID = 'x47TgeRJtH0';
 
   const screens = [...document.querySelectorAll('.screen')];
@@ -185,9 +194,9 @@ button{-webkit-tap-highlight-color:transparent}
   let currentWord = -1;
 
   const words = [
-    ['WE', 108.92], ['WERE', 109.36], ['TOO', 109.84], ['CLOSE', 110.28], ['TO', 110.86], ['THE', 111.27], ['STARS', 111.68],
-    ['I', 112.58], ['NEVER', 113.02], ['KNEW', 113.63], ['SOMEBODY', 114.12], ['LIKE', 115.09], ['YOU,', 115.61], ['SOMEBODY', 116.22],
-    ["FALLIN'", 117.63], ['JUST', 118.49], ['AS', 119.18], ['HARD', 119.71]
+    ['WE', 109.00], ['WERE', 109.34], ['TOO', 109.76], ['CLOSE', 110.17], ['TO', 110.66], ['THE', 111.02], ['STARS', 111.40],
+    ['I', 112.60], ['NEVER', 112.98], ['KNEW', 113.48], ['SOMEBODY', 114.02], ['LIKE', 114.96], ['YOU,', 115.47], ['SOMEBODY', 116.03],
+    ["FALLIN'", 117.62], ['JUST', 118.34], ['AS', 118.92], ['HARD', 119.50]
   ];
 
   function showScreen(target){
@@ -254,9 +263,9 @@ button{-webkit-tap-highlight-color:transparent}
   function relativeCurrent(){
     if(player && ytReady && typeof player.getCurrentTime === 'function'){
       const t = player.getCurrentTime();
-      if(t && t >= START - .5) return t;
+      if(Number.isFinite(t)) return t;
     }
-    return START + (performance.now() - startPerf) / 1000;
+    return START;
   }
 
   function loop(){
@@ -266,17 +275,20 @@ button{-webkit-tap-highlight-color:transparent}
     if(idx >= 0) showWord(idx);
     if(t >= END){
       if(player && ytReady) player.pauseVideo();
-      wordEl.classList.add('hide');
-      endLove.classList.add('visible');
+      setTimeout(() => {
+        wordEl.classList.add('hide');
+        endLove.classList.add('visible');
+      }, 260);
       return;
     }
     raf = requestAnimationFrame(loop);
   }
 
   function beginVisuals(){
-    startPerf = performance.now();
     currentWord = -1;
     endLove.classList.remove('visible');
+    wordEl.classList.remove('show','hide','blue-word');
+    wordEl.textContent = '';
     cancelAnimationFrame(raf);
     loop();
   }
@@ -284,7 +296,6 @@ button{-webkit-tap-highlight-color:transparent}
   function startEdit(){
     if(editStarted) return;
     editStarted = true;
-    beginVisuals();
     loadYouTube();
   }
 
@@ -301,7 +312,7 @@ button{-webkit-tap-highlight-color:transparent}
     if(player) return;
     player = new YT.Player('yt', {
       width:'1', height:'1', videoId:VIDEO_ID,
-      playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,start:109,end:121},
+      playerVars:{autoplay:0,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,start:109,end:122},
       events:{
         onReady:() => {
           ytReady = true;
@@ -309,7 +320,16 @@ button{-webkit-tap-highlight-color:transparent}
           player.unMute();
           player.setVolume(100);
           player.playVideo();
-          startPerf = performance.now();
+        },
+        onStateChange:(event) => {
+          if(event.data === YT.PlayerState.PLAYING){
+            const now = player.getCurrentTime();
+            if(now < START - .25 || now > END + .5){
+              player.seekTo(START,true);
+              return;
+            }
+            beginVisuals();
+          }
         }
       }
     });
